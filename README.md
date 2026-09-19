@@ -49,7 +49,13 @@ The installer does not assign the demonstration role to a user. The task has no 
 
 Use the [owner and judge walkthrough](DEMO.md) to inspect the six areas and reproduce the bounded demonstration workflows.
 
-Watch the [2:58 demonstration video](https://www.youtube.com/watch?v=yzOxP8VXZPw) for an edited walkthrough of actual UI states from v0.1.0. It shows a web-app enable/disable cycle with verified restoration and a completed bounded audit search; permission, wallet and task examples stop at review. English captions are provided. The video uses a disposable administrative test account and does not imply contest acceptance or an award.
+Watch the edited walkthroughs of actual UI states from v0.1.0:
+
+- [Overview — 2:58](https://www.youtube.com/watch?v=yzOxP8VXZPw): a web-app enable/disable cycle with verified restoration and a completed bounded audit search; permission, wallet and task examples stop at review.
+- [Task lifecycle and triage — 2:22](https://www.youtube.com/watch?v=beluXt-UDZ0): verified suspension and resumption, one demonstration-task run with later completion evidence, and the limits of PID correlation. The initial unsuspended state and read-only workflow guard are restored.
+- [REST exploration and bounded journal reads — 2:14](https://www.youtube.com/watch?v=KpxdD4lBYbw): a live journal-file inventory read, a reference-only write entry, and one bounded journal search that completes after refresh with two metadata records. Local filtering does not issue another search; global nodes and stored values remain withheld.
+
+All three videos provide English captions and use a disposable administrative test account. They do not imply contest acceptance or an award.
 
 For an existing instance, install the adapter deliberately and set `IRIS_BASE_URL`, `IRIS_USERNAME`, `IRIS_PASSWORD` (or `IRIS_BEARER_TOKEN`) before running `python app/backend.py`. Only loopback upstream origins are accepted. The optional adapter requires `%Admin_Operate:U`; management operations check their respective privileges. Read-only UI mode is a workflow guard, not a separate read-only IRIS credential.
 
