@@ -1,0 +1,7 @@
+*
+!Dockerfile
+!iris/
+!iris/**
+**/__pycache__/
+**/*.pyc
+iris/test_*.py

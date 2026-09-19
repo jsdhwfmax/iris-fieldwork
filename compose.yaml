@@ -1,0 +1,42 @@
+services:
+  secret-init:
+    build: .
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -eu
+        umask 077
+        install -d -o 51773 -g 51773 -m 0700 /run/iris-secrets
+        install -o 51773 -g 51773 -m 0400 /run/secrets/iris-password /run/iris-secrets/iris-password
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER]
+    security_opt: ["no-new-privileges:true"]
+    secrets:
+      - source: iris_password
+        target: iris-password
+    volumes:
+      - iris_password:/run/iris-secrets
+  iris:
+    build: .
+    depends_on:
+      secret-init:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${IRIS_HOST_PORT:-52773}:52773"
+    mem_limit: 2300m
+    cpus: 2
+    volumes:
+      - iris_password:/run/secrets:ro
+    healthcheck:
+      test: ["CMD", "/irisHealth.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+secrets:
+  iris_password:
+    file: .secrets/iris-password
+volumes:
+  iris_password:

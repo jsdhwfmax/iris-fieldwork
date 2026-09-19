@@ -1,0 +1,194 @@
+{
+  "project": "fieldwork-compose-check",
+  "guest_directory": "/home/ubuntu/fieldwork-compose-check",
+  "guest_loopback_port": 52774,
+  "main_container": "clearrow-iris",
+  "credentials_in_output_or_argv": false,
+  "plugins": [
+    {
+      "name": "compose",
+      "version": "v5.5.1",
+      "source": "https://github.com/docker/compose/releases/download/v5.5.1/docker-compose-linux-x86_64",
+      "sha256": "db1889184726840f75c4f9c001048430d4f25b3be3cb084d3ddd762bc0aed576",
+      "installed_in": "guest only"
+    },
+    {
+      "name": "buildx",
+      "version": "v0.37.1",
+      "source": "https://github.com/docker/buildx/releases/download/v0.37.1/buildx-v0.37.1.linux-amd64",
+      "sha256": "9447199cdb435f25880548343c128a4b6650e8891ee598905d8d29d39a8e359b",
+      "installed_in": "guest only"
+    }
+  ],
+  "official_installation_guides": [
+    "https://docs.docker.com/compose/install/linux/",
+    "https://github.com/docker/buildx#installing"
+  ],
+  "prepare": {
+    "main_before": {
+      "id": "7b689ceef4a6a298fa8676debcc64bea5dcee93f6b612887562b8c86e95ba8cb",
+      "started_at": "2026-09-19T03:32:05.946187726Z",
+      "status": "running",
+      "health": "healthy"
+    },
+    "compose": "Docker Compose version v5.5.1",
+    "buildx": "github.com/docker/buildx v0.37.1 0b265a9f62db554fa9aba6dd19e1bd5704bc7d8a",
+    "source_password_uid": 1000,
+    "source_password_mode": "0o600",
+    "source_settings_mode": "0o600",
+    "source_directory_mode": "0o700",
+    "direct_secret_readable_by_default_iris_user": false,
+    "rerun_preserved_credentials": true,
+    "compose_config_valid": true,
+    "source_sha256": {
+      "Dockerfile": "7eb02a0b493152c1f17eaa3c16e375a48b5c76952d5e72df672bdfb35216a194",
+      ".dockerignore": "1ff35b91a81f861417aa09e543917f4318c0e0e9c896d564d59716949c8ccbd5",
+      "compose.yaml": "b0c689a03d5d70be6f569d70a78526f910ab2493d845f8e8dd1d2412295c820d",
+      "prepare_local.py": "2a18f42f81df7001a0f76a473406505ee5e560bf6e9c5cdb79da4282c5e460f1",
+      "iris/Fieldwork.DemoTask.cls": "bf68e62db02d359c6d4867857c0598691b38b8f16f45c56cb1e6bdf33d9a3a92",
+      "iris/Fieldwork.Runtime.cls": "9629ad3158fdade254c8ee14fa32f6fbf5e9a96fce1aa263fe3a3b9c38113da4",
+      "iris/fieldwork_runtime.py": "bb494522ef3817181fbc3be4d4b02aed3c22fea89eda2a0d6854382630ab555f",
+      "iris/install.script": "ce784fd70b7da5956c91dcaa54ced0786e24beb97fd523c5fac1fafd561f3aa7",
+      "iris/test_runtime.py": "c76c0ef9096d1d09a396ac73dfac170e0c751ddb8275e3650ce392eb52e40dbb"
+    }
+  },
+  "updated_at": "2026-09-19T04:22:15+00:00",
+  "start": {
+    "returncode": 0,
+    "elapsed_seconds": 8.31,
+    "container_id": "6a3b73aac6bd41ffe267792e708560c91dcdca1e60921d65fc502b777d6a11c6"
+  },
+  "status": "passed",
+  "commands": {
+    "prepare": "python3 prepare_local.py --port 52774",
+    "start": "IRIS_HOST_PORT=52774 docker compose --project-name fieldwork-compose-check up --build -d",
+    "stop": "IRIS_HOST_PORT=52774 docker compose --project-name fieldwork-compose-check stop"
+  },
+  "container_status": {
+    "container_id": "6a3b73aac6bd41ffe267792e708560c91dcdca1e60921d65fc502b777d6a11c6",
+    "state": "running",
+    "health": "healthy",
+    "installer_marker": true,
+    "secret_init_exit_code": 0,
+    "bindings": {
+      "52773/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "52774"
+        }
+      ]
+    },
+    "main": {
+      "id": "7b689ceef4a6a298fa8676debcc64bea5dcee93f6b612887562b8c86e95ba8cb",
+      "started_at": "2026-09-19T03:32:05.946187726Z",
+      "status": "running",
+      "health": "healthy"
+    }
+  },
+  "verify": {
+    "container_id": "6a3b73aac6bd41ffe267792e708560c91dcdca1e60921d65fc502b777d6a11c6",
+    "authenticated_checks": [
+      {
+        "path": "/api/admin/info",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "dict"
+      },
+      {
+        "path": "/fieldwork/runtime/metrics",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "dict"
+      },
+      {
+        "path": "/fieldwork/runtime/logs",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "list"
+      },
+      {
+        "path": "/fieldwork/runtime/task-states",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "list",
+        "demo_task_count": 1
+      },
+      {
+        "path": "/api/admin/v2/security/resource?name=FieldworkDemoResource",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "dict",
+        "no_public_grants": true
+      },
+      {
+        "path": "/api/admin/v2/security/role?name=FieldworkDemoRole",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "dict",
+        "no_grants": true,
+        "no_inherited_roles": true
+      },
+      {
+        "path": "/api/admin/v2/web-app?name=%2Ffieldwork%2Fdemo",
+        "http_status": 200,
+        "application_error_count": 0,
+        "data_type": "dict",
+        "demo_app_disabled": true
+      }
+    ],
+    "unauthenticated_checks": [
+      {
+        "path": "/api/admin/info",
+        "http_status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/metrics",
+        "http_status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/logs",
+        "http_status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/task-states",
+        "http_status": 401
+      }
+    ],
+    "runtime_password_owner_group_mode": "51773:51773:400",
+    "runtime_secret_directory_owner_group_mode": "51773:51773:700",
+    "runtime_secret_mount_read_only": true,
+    "source_password_mode": "0o600",
+    "secret_values_read_back_from_iris": false,
+    "main": {
+      "id": "7b689ceef4a6a298fa8676debcc64bea5dcee93f6b612887562b8c86e95ba8cb",
+      "started_at": "2026-09-19T03:32:05.946187726Z",
+      "status": "running",
+      "health": "healthy"
+    }
+  },
+  "issues_fixed": [
+    {
+      "issue": "Mode600 host-user file is unreadable to default IRIS uid51773",
+      "fix": "Isolated root init service copies to mode0400 uid51773 named volume; source stays mode600 and IRIS mounts volume read-only"
+    },
+    {
+      "issue": "iris qstat IRIS is not a supported command on the pinned image",
+      "fix": "Use image-provided /irisHealth.sh health check"
+    }
+  ],
+  "final_compose_sha256": "669d355065abb5c24d13817549b2aa9fec5660f8fc81f5d7749f565fb4e7b13c",
+  "stop": {
+    "container_id": "6a3b73aac6bd41ffe267792e708560c91dcdca1e60921d65fc502b777d6a11c6",
+    "state": "exited",
+    "exit_code": 0,
+    "main": {
+      "id": "7b689ceef4a6a298fa8676debcc64bea5dcee93f6b612887562b8c86e95ba8cb",
+      "started_at": "2026-09-19T03:32:05.946187726Z",
+      "status": "running",
+      "health": "healthy"
+    },
+    "check_container_and_private_volume_retained": true,
+    "main_identity_and_start_time_unchanged": true,
+    "passed": true
+  }
+}

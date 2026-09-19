@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-19",
+  "instance": "clearrow-iris",
+  "base_url": "http://127.0.0.1:8766",
+  "checks": [
+    {
+      "check": "inspect.role",
+      "state": "ok",
+      "count": 1
+    },
+    {
+      "check": "inspect.resource",
+      "state": "ok",
+      "count": 1
+    },
+    {
+      "check": "inspect.wallet_collection",
+      "state": "ok",
+      "count": 1
+    },
+    {
+      "check": "inspect.wallet_secrets",
+      "state": "ok",
+      "count": 1
+    },
+    {
+      "check": "role.set_resources",
+      "http_status": 200,
+      "state": "verified",
+      "value_verified": null,
+      "other_fields_unchanged": true
+    },
+    {
+      "check": "role.set_resources",
+      "http_status": 200,
+      "state": "verified",
+      "value_verified": null,
+      "other_fields_unchanged": true
+    },
+    {
+      "check": "wallet.collection.create",
+      "http_status": 200,
+      "state": "verified",
+      "value_verified": false,
+      "other_fields_unchanged": null
+    },
+    {
+      "check": "wallet.secret.create",
+      "http_status": 200,
+      "state": "accepted_metadata_verified",
+      "value_verified": false,
+      "other_fields_unchanged": null
+    },
+    {
+      "check": "wallet.secret.update",
+      "http_status": 200,
+      "state": "accepted_metadata_verified",
+      "value_verified": false,
+      "other_fields_unchanged": null
+    },
+    {
+      "check": "wallet.secret.delete",
+      "http_status": 200,
+      "state": "verified",
+      "value_verified": false,
+      "other_fields_unchanged": null
+    },
+    {
+      "check": "audit.search",
+      "state": "complete",
+      "count": 10,
+      "metadata_only": true
+    },
+    {
+      "check": "journal.search",
+      "state": "complete",
+      "count": 5,
+      "metadata_only": true
+    }
+  ],
+  "disposable_role_restored": true,
+  "disposable_secret_removed": true,
+  "secret_value_readback_attempted": false
+}

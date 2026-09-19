@@ -1,0 +1,28 @@
+zn "USER"
+set sc=$system.OBJ.Load("/opt/fieldwork/Fieldwork.Runtime.cls","ck")
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 }
+set sc=$system.OBJ.Load("/opt/fieldwork/Fieldwork.DemoTask.cls","ck")
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 }
+set sc=##class(Fieldwork.DemoTask).Ensure()
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 }
+zn "%SYS"
+if '##class(Security.Resources).Exists("FieldworkDemoResource") { set sc=##class(Security.Resources).Create("FieldworkDemoResource","Disposable Fieldwork permission demonstration","") if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 } }
+if '##class(Security.Roles).Exists("FieldworkDemoRole") { set sc=##class(Security.Roles).Create("FieldworkDemoRole","Disposable Fieldwork role demonstration","","",0) if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 } }
+kill props
+set props("NameSpace")="USER"
+set props("DispatchClass")="Fieldwork.Runtime"
+set props("AutheEnabled")=32
+set props("Enabled")=0
+set props("ResourceRequired")="%Admin_Operate"
+if '##class(Security.Applications).Exists("/fieldwork/demo") { set sc=##class(Security.Applications).Create("/fieldwork/demo",.props) if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 } }
+kill props
+set props("NameSpace")="USER"
+set props("DispatchClass")="Fieldwork.Runtime"
+set props("AutheEnabled")=32
+set props("Enabled")=1
+set props("ResourceRequired")="%Admin_Operate"
+set app="/fieldwork/runtime"
+if ##class(Security.Applications).Exists(app) { set sc=##class(Security.Applications).Modify(app,.props) } else { set sc=##class(Security.Applications).Create(app,.props) }
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) zhalt 1 }
+write "FIELDWORK_INSTALLED",!
+halt

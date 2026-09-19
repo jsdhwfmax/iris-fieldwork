@@ -1,0 +1,13 @@
+runtime/downloads/
+runtime/pythonlib/
+runtime/tools/
+runtime/vm/
+runtime/*.log
+runtime/*.pid
+runtime/__pycache__/
+.env
+*.private
+.secrets/
+app/__pycache__/
+iris/__pycache__/
+spec/mainspec_v2.json

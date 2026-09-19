@@ -1,0 +1,10 @@
+{
+  "target": "/fieldwork/demo",
+  "before_enabled": false,
+  "after_enabled": true,
+  "changed_keys": [
+    "Enabled"
+  ],
+  "restored_exact": true,
+  "field_count": 46
+}

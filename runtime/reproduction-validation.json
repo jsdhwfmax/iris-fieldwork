@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-09-19T03:24:00Z",
+  "dockerfile_build": "passed",
+  "image_tag": "fieldwork-lab:2026.2",
+  "container": "fieldwork-repro-check",
+  "fresh_database": true,
+  "automatic_adapter_compile_and_install": "passed",
+  "authenticated_http_checks": {
+    "/api/admin/info": 200,
+    "/fieldwork/runtime/metrics": 200,
+    "/fieldwork/runtime/logs": 200
+  },
+  "application_errors": 0,
+  "compose_cli_validation": "not yet run; equivalent docker build/run validated",
+  "cleanup": "stopped after checks; retained for inspection"
+}

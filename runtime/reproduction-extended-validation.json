@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-09-19T04:04:14.690650+00:00",
+  "dockerfile_build": "passed",
+  "image_id": "dc0c2d922c27",
+  "image_tag": "fieldwork-lab:2026.2",
+  "container": "fieldwork-repro-permissions",
+  "fresh_database": true,
+  "automatic_adapter_compile_and_install": "passed",
+  "authenticated_http_checks": [
+    {
+      "path": "/api/admin/info",
+      "http_status": 200,
+      "application_errors": false
+    },
+    {
+      "path": "/fieldwork/runtime/metrics",
+      "http_status": 200,
+      "application_errors": false
+    },
+    {
+      "path": "/fieldwork/runtime/logs",
+      "http_status": 200,
+      "application_errors": false
+    },
+    {
+      "path": "/fieldwork/runtime/task-states",
+      "http_status": 200,
+      "application_errors": false,
+      "demo_task_exists": true
+    },
+    {
+      "path": "/api/admin/v2/security/resource",
+      "http_status": 200,
+      "application_errors": false,
+      "no_public_permissions": true
+    },
+    {
+      "path": "/api/admin/v2/security/role",
+      "http_status": 200,
+      "application_errors": false,
+      "role_unassigned_and_no_grants": true
+    },
+    {
+      "path": "/api/admin/v2/web-app",
+      "http_status": 200,
+      "application_errors": false,
+      "demo_disabled": true
+    }
+  ],
+  "compose_cli_validation": "not yet run; equivalent docker build/run validated",
+  "cleanup": "stopped after checks; retained for inspection"
+}

@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-19",
+  "base_url": "http://127.0.0.1:8766",
+  "instance": "clearrow-iris",
+  "browser": "Codex in-app browser",
+  "checks": {
+    "role_grant": "verified with unchanged other fields",
+    "role_restore": "verified with unchanged other fields",
+    "wallet_metadata": "displayed names and types only",
+    "wallet_replace_review": "displayed key name, allowed hosts, TLS, usage and resource bindings; blank password field; not submitted",
+    "audit_search": "pending then complete after explicit result refresh; ten rows",
+    "audit_updated_result_presentation": "complete with five rows, sample-limit warning and metadata coverage notes",
+    "journal_search": "complete with five metadata records",
+    "tls_inspection": "HTTP 200; no key material shown",
+    "final_ui_mode": "read-only"
+  },
+  "browser_wallet_mutations_submitted": false,
+  "secret_values_read_back": false
+}

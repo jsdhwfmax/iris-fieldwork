@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#eff3f0">
+  <title>IRIS Fieldwork · Operations workspace</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to workspace</a>
+  <aside class="sidebar" id="sidebar" aria-label="Workspace navigation">
+    <a class="brand" href="#system" aria-label="IRIS Fieldwork home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span><strong>IRIS Fieldwork</strong><small>OPERATIONS WORKSPACE</small></span>
+    </a>
+    <div class="nav-caption">MANAGE YOUR INSTANCE</div>
+    <nav id="section-nav" aria-label="Management areas"></nav>
+    <div class="sidebar-divider"></div>
+    <button class="utility-link" data-action="explorer"><span data-icon="code"></span>REST explorer<span class="link-arrow">↗</span></button>
+    <div class="sidebar-bottom">
+      <div class="instance-label"><span class="state-dot" id="connection-dot"></span><strong id="connection-label">Connecting to IRIS</strong></div>
+      <p id="instance-description">Checking instance availability.</p>
+      <div class="instance-version" id="instance-version">Instance information pending</div>
+      <div class="local-note"><span data-icon="shield"></span>Credentials stay on the server</div>
+    </div>
+  </aside>
+  <div class="sidebar-scrim" data-action="close-nav"></div>
+  <div class="application">
+    <header class="topbar">
+      <div class="breadcrumb"><button class="icon-button mobile-menu" data-action="toggle-nav" aria-label="Open navigation"><span data-icon="menu"></span></button><span class="breadcrumb-root">Workspace</span><span class="breadcrumb-slash">/</span><span id="breadcrumb-current">System</span></div>
+      <div class="topbar-right"><button class="mode-pill" id="review-toggle" data-action="toggle-review" aria-pressed="false"><span data-icon="lock"></span><span>Read-only mode</span></button><span class="topbar-separator"></span><span class="session-label">Instance session</span></div>
+    </header>
+    <main id="workspace" tabindex="-1">
+      <div class="page-heading">
+        <div><div class="eyebrow" id="section-eyebrow">SYSTEM / 05</div><h1 id="section-title">System operations</h1><p class="page-description" id="section-description">A clear view of processes, devices and instance resources.</p></div>
+        <div class="heading-actions"><button class="button" data-action="triage"><span data-icon="activity"></span>Task triage</button><button class="button button-primary" id="refresh-button" data-action="refresh"><span data-icon="refresh"></span>Refresh data</button></div>
+      </div>
+      <div id="global-notice" class="notice" hidden role="status"></div>
+      <div class="snapshot-strip" aria-label="Current section snapshot">
+        <div class="snapshot-item"><div class="snapshot-icon"><span data-icon="layers"></span></div><div><span class="metric-label">Sources available</span><strong id="metric-sources">—</strong></div></div>
+        <div class="snapshot-item"><div class="snapshot-icon"><span data-icon="rows"></span></div><div><span class="metric-label">Rows received</span><strong id="metric-records">—</strong></div></div>
+        <div class="snapshot-item snapshot-time"><div class="snapshot-icon"><span data-icon="clock"></span></div><div><span class="metric-label">Last refreshed</span><strong id="metric-time">Waiting for data</strong></div><span id="snapshot-state" class="badge badge-neutral">Connecting</span></div>
+      </div>
+      <div class="source-navigation"><div class="small-label">DATA SOURCES</div><nav id="source-tabs" aria-label="Section data sources"></nav></div>
+      <div class="content-layout">
+        <section class="data-panel" aria-labelledby="resource-title">
+          <div class="panel-heading"><div><h2 id="resource-title">Loading sources</h2><p id="resource-description" class="muted">Requesting the current instance snapshot.</p></div><div class="panel-heading-actions"><div id="resource-actions"></div><button class="icon-button" id="inspect-button" data-action="inspect" aria-label="Inspect complete source response" title="Inspect source response" disabled><span data-icon="braces"></span></button></div></div>
+          <div class="table-toolbar"><label class="search-field"><span data-icon="search"></span><input id="table-search" type="search" placeholder="Search all fields…" autocomplete="off" aria-label="Search records and nested fields"><kbd>/</kbd></label><span id="filter-count" class="muted"></span></div>
+          <div id="resource-content" aria-live="polite" aria-busy="true"><div class="loading-state"><span class="spinner"></span><span>Loading live data…</span></div></div>
+          <div class="table-footer" id="table-footer"></div>
+        </section>
+        <aside class="context-panel" aria-label="Source details"><div class="context-heading"><span data-icon="compass"></span><h2>Source context</h2></div><div id="source-context"><p class="muted">Endpoint details will appear here.</p></div><div id="section-limitations"></div><div class="context-tip"><span data-icon="search"></span><p>Search includes nested fields. Open a row to inspect its full structure.</p></div></aside>
+      </div>
+      <footer class="workspace-footer"><span><span class="tiny-square"></span>IRIS Fieldwork</span><span>Live instance data · Explicit command review</span></footer>
+    </main>
+  </div>
+  <div class="drawer-layer" id="drawer-layer" hidden>
+    <div class="drawer-scrim" data-action="close-drawer"></div>
+    <section class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" tabindex="-1"><header class="drawer-heading"><div><div class="eyebrow" id="drawer-eyebrow">INSPECT</div><h2 id="drawer-title">Details</h2></div><button class="icon-button" data-action="close-drawer" aria-label="Close panel"><span data-icon="close"></span></button></header><div id="drawer-body"></div></section>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

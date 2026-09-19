@@ -1,0 +1,34 @@
+{
+  "checked_date": "2026-09-19",
+  "instance": "local disposable IRIS Community 2026.2",
+  "task": {
+    "id": 1000,
+    "name": "Fieldwork demonstration",
+    "suspend": "changed actual task state to true; exposed stale API list flag",
+    "resume_via_final_ui": "verified true to false using identity-matched task adapter",
+    "run_via_ui": "accepted once; counter subsequently read as 1 from initial 0",
+    "completion_record": "Success",
+    "automatic_retry": false,
+    "final_suspended": false
+  },
+  "web": {
+    "target": "/fieldwork/demo",
+    "direct_api_partial_update": "passed, restored exactly; 45 other fields preserved",
+    "first_ui_attempt": "Rejected before mutation because detailed API omitted Type; compatibility fixed and retested",
+    "enable_via_final_ui": "Verified false to true; other configuration fields unchanged",
+    "disable_via_final_ui": "Verified true to false; other configuration fields unchanged",
+    "final_enabled": false
+  },
+  "external_effects": "none; test task only increments its own local counter",
+  "test_counts": {
+    "backend": 33,
+    "runtime_log_regressions": 6,
+    "live_management_probes": 22
+  },
+  "browser": {
+    "desktop": "passed",
+    "mobile_width390": "passed; viewport reset",
+    "final_mode": "read-only",
+    "all_six_live_views": "passed"
+  }
+}

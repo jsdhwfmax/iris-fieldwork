@@ -1,0 +1,16 @@
+{
+  "vendor_spec_present": false,
+  "credentials_present": false,
+  "results": [
+    {
+      "area": "app",
+      "exit_code": 0,
+      "summary": "----------------------------------------------------------------------\nRan 105 tests in 0.887s\n\nOK (skipped=1)"
+    },
+    {
+      "area": "iris",
+      "exit_code": 0,
+      "summary": "----------------------------------------------------------------------\nRan 6 tests in 0.104s\n\nOK"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/intersystems-community/sysadmin-api-specification",
+  "commit": "f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34",
+  "commit_time_utc": "2026-09-14T18:53:01Z",
+  "retrieved_date_utc": "2026-09-19",
+  "path": "mainspec_v2.json",
+  "raw_url": "https://raw.githubusercontent.com/intersystems-community/sysadmin-api-specification/f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34/mainspec_v2.json",
+  "sha256": "1ab154c7c5d9b25e6b227944a44a120c670686f876c2e14abfb9ee5898596650",
+  "openapi": "3.0.0",
+  "api_title": "SysAdmin APIs",
+  "api_version": "2",
+  "server_base_path": "/api/admin",
+  "provenance": "Unmodified download of the organizer-published API specification; documentation evidence only, not proof an installed IRIS instance implements these endpoints.",
+  "license_note": "No repository license file was visible at retrieval; retain original attribution and confirm redistribution terms before publishing this vendored file."
+}
