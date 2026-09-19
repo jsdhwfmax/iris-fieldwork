@@ -49,6 +49,8 @@ The installer does not assign the demonstration role to a user. The task has no 
 
 Use the [owner and judge walkthrough](DEMO.md) to inspect the six areas and reproduce the bounded demonstration workflows.
 
+Watch the [2:58 demonstration video](https://www.youtube.com/watch?v=yzOxP8VXZPw) for an edited walkthrough of actual UI states from v0.1.0. It shows a web-app enable/disable cycle with verified restoration and a completed bounded audit search; permission, wallet and task examples stop at review. English captions are provided. The video uses a disposable administrative test account and does not imply contest acceptance or an award.
+
 For an existing instance, install the adapter deliberately and set `IRIS_BASE_URL`, `IRIS_USERNAME`, `IRIS_PASSWORD` (or `IRIS_BEARER_TOKEN`) before running `python app/backend.py`. Only loopback upstream origins are accepted. The optional adapter requires `%Admin_Operate:U`; management operations check their respective privileges. Read-only UI mode is a workflow guard, not a separate read-only IRIS credential.
 
 Development validation used a disposable Linux container inside a QEMU VM. VM tooling, images, binaries and saved instance credentials are excluded from the published source. The optional metadata-only API probe is `runtime/probe.py`.
