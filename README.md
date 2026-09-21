@@ -1,6 +1,6 @@
 # IRIS Fieldwork
 
-A local operations workspace for InterSystems IRIS 2026.2. It brings web applications, permissions, wallet management, tasks, system telemetry and log searches into one interface. This is an original contest prototype under active development; the contest entry has not been submitted or judged.
+A local operations workspace for InterSystems IRIS 2026.2. It brings web applications, permissions, wallet management, tasks, system telemetry and log searches into one interface. This is an original contest prototype under active development. InterSystems confirmed its approval for the [Build Your Own Management Portal contest](https://openexchange.intersystems.com/contest/48) on 21 September 2026; no award is claimed.
 
 Version **0.1.0** is published on [InterSystems Open Exchange](https://openexchange.intersystems.com/package/IRIS-Fieldwork), with three demonstration videos. The listing was approved on 19 September 2026 and verified publicly available on 21 September 2026.
 
