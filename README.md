@@ -98,7 +98,7 @@ The role API similarly accepted a `Resources`-only update while preserving `Desc
 
 Audit/journal POST searches return HTTP 202 with a `/v1/async-result?id=...` Location even when invoked through v2. Fieldwork validates that local route and numeric identifier, then polls the fixed v2 async-result endpoint. The live response omits `GUID`, despite that property appearing in the specification. The gateway checks the requested identifier and task kind; if a GUID is present, it must match. Failure details and console content are withheld.
 
-Owner review using the walkthrough remains necessary before contest submission. Broader app or operating-system management is a possible extension, not a completed feature or an asserted contest requirement.
+Use the walkthrough to review each operation and its limits before running the demonstrations on a disposable instance. Broader app or operating-system management is a possible extension, not a completed feature or an asserted contest requirement.
 
 ## Sources and authorship
 
@@ -108,4 +108,4 @@ Original project code is available under the [MIT license](LICENSE). See [NOTICE
 
 The gateway uses operation metadata from the [InterSystems SysAdmin API specification](https://github.com/intersystems-community/sysadmin-api-specification), reviewed at commit `f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34`. The vendored working copy is excluded from publication because a redistribution license has not been established. No upstream source implementation is copied into the gateway.
 
-This project was developed with AI coding assistance. The entrant must review and understand it, reproduce the demonstration and take responsibility for the work before submission under the [official contest AI guidance](https://community.intersystems.com/post/guidelines-using-generative-ai-when-writing-posts-developer-community).
+This project was developed with AI coding assistance. The entrant confirmed review and understanding of the app and walkthrough before submitting and remains responsible for the work under the [official contest AI guidance](https://community.intersystems.com/post/guidelines-using-generative-ai-when-writing-posts-developer-community).

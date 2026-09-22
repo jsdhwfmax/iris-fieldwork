@@ -1,6 +1,6 @@
 # IRIS Fieldwork walkthrough
 
-This AI-assisted prototype has not been submitted. The owner should understand each operation and its limits, reproduce the walkthrough, and take responsibility for the entry; checking a review box is not a substitute.
+This AI-assisted prototype was approved for the [Build Your Own Management Portal contest](https://openexchange.intersystems.com/contest/48) on 21 September 2026 and is listed on the public contest roster. This walkthrough documents the operations and their limits for review on a disposable local instance. No award is claimed.
 
 Follow [README: Local installation](README.md#local-installation) from this directory. On a clean Docker installation with Linux containers and the documented CPU requirements:
 
