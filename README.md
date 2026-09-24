@@ -27,7 +27,7 @@ Audit searches accept server-clock dates and single user/event filters; journal 
 
 ## Interactive preview
 
-[Explore the browser preview](https://jsdhwfmax.github.io/iris-fieldwork/) without installing IRIS. It uses deliberately synthetic fixtures for the six areas, with local filtering, sorting and record inspection. It has no IRIS connection, administrative commands or secret entry. Its values are examples, not measurements from the tested instance.
+The [browser preview source](docs/) runs without installing IRIS. From this repository, run `python -m http.server 8771 --bind 127.0.0.1 --directory docs` and open `http://127.0.0.1:8771`. It uses deliberately synthetic fixtures for the six areas, with local filtering, sorting and record inspection. It has no IRIS connection, administrative commands or secret entry. Its values are examples, not measurements from the tested instance.
 
 The preview helps explain the interface; the local installation and recorded demonstrations below show the actual IRIS integration. The static preview is maintained separately in `docs/` and does not change the local gateway. No online-demo bonus is claimed as awarded.
 
