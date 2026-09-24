@@ -2,6 +2,8 @@
 
 This AI-assisted prototype was approved for the [Build Your Own Management Portal contest](https://openexchange.intersystems.com/contest/48) on 21 September 2026 and is listed on the public contest roster. This walkthrough documents the operations and their limits for review on a disposable local instance. No award is claimed.
 
+For a quick interface tour, [open the synthetic browser preview](https://jsdhwfmax.github.io/iris-fieldwork/). It requires no installation and supports browsing, filtering, sorting and inspecting example records. Its data is fictional, it has no IRIS connection, and commands and secret entry are unavailable. The operations below apply only to the actual local installation.
+
 Follow [README: Local installation](README.md#local-installation) from this directory. On a clean Docker installation with Linux containers and the documented CPU requirements:
 
 ```sh

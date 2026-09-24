@@ -25,6 +25,12 @@ Wallet writes require a reviewed existing collection and its current edit/use re
 
 Audit searches accept server-clock dates and single user/event filters; journal searches require an exact file from the current bounded inventory. Searches return at most 100 metadata rows. Pending searches are polled using a gateway-owned token, expire after ten minutes, and are never automatically resubmitted. A gateway holds at most 32 search tokens.
 
+## Interactive preview
+
+[Explore the browser preview](https://jsdhwfmax.github.io/iris-fieldwork/) without installing IRIS. It uses deliberately synthetic fixtures for the six areas, with local filtering, sorting and record inspection. It has no IRIS connection, administrative commands or secret entry. Its values are examples, not measurements from the tested instance.
+
+The preview helps explain the interface; the local installation and recorded demonstrations below show the actual IRIS integration. The static preview is maintained separately in `docs/` and does not change the local gateway. No online-demo bonus is claimed as awarded.
+
 ## Local installation
 
 Requires Docker with Linux containers and Python 3.10 or newer. The host CPU must satisfy IRIS 2026.2's x86-64-v3 requirements (AVX/AVX2/BMI/BMI2). The IRIS image and Python gateway use separate processes; both HTTP ports bind to loopback.

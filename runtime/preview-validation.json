@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-24",
+  "scope": "Separate static synthetic preview only; production gateway and runtime unchanged",
+  "checks": [
+    "Both JavaScript files passed node --check",
+    "All six sections rendered in the browser",
+    "All 25 sources rendered in an isolated agent harness",
+    "Filtering reduced three web-app examples to one matching record",
+    "Keyboard clearing and ascending/descending sorting verified in browser",
+    "Record inspector contains no management actions or secret fields",
+    "Task triage shows example PID reuse caution and matching synthetic process",
+    "REST reference has no request execution",
+    "Final reset clears search and restores three records",
+    "Final browser console returned no warning or error entries",
+    "Source review found no fetch, XHR, WebSocket, beacon, action/log-query transport or password fields",
+    "CSP connect-src and form-action are none; asset URLs are relative"
+  ],
+  "limitations": [
+    "Synthetic fixtures do not validate live IRIS behavior",
+    "Online-demo bonus eligibility remains unconfirmed",
+    "No new production-runtime test run is claimed"
+  ]
+}
