@@ -2,7 +2,7 @@
 
 A local operations workspace for InterSystems IRIS 2026.2. It brings web applications, permissions, wallet management, tasks, system telemetry and log searches into one interface. This is an original contest prototype under active development. InterSystems confirmed its approval for the [Build Your Own Management Portal contest](https://openexchange.intersystems.com/contest/48) on 21 September 2026; no award is claimed.
 
-Version **0.1.0** is published on [InterSystems Open Exchange](https://openexchange.intersystems.com/package/IRIS-Fieldwork), with three demonstration videos. The listing was approved on 19 September 2026 and verified publicly available on 21 September 2026.
+Version **0.2.0** is published on [InterSystems Open Exchange](https://openexchange.intersystems.com/package/IRIS-Fieldwork) and the public community IPM registry, confirmed on 24 September 2026. Three demonstration videos show the local prototype in action.
 
 The browser talks to a Python gateway on loopback. IRIS credentials stay in the server process. Curated SysAdmin API calls supply instance data; an original Embedded Python/ObjectScript adapter adds Linux and container telemetry, bounded runtime logs and an independent task-state check.
 
@@ -33,12 +33,17 @@ The preview helps explain the interface; the local installation and recorded dem
 
 ## Local installation
 
-The current source also contains a complete **0.2.0 IPM package candidate** for
-Linux IRIS 2026.2 in `USER`: gateway, UI and authenticated adapter. See the
-[package installation guide](IPM.md). Public community-registry availability is
-pending review; the command `zpm "install iris-fieldwork"` is not yet advertised
-as available. The package creates no demo data or credentials. Its ownership
-checks refuse existing manual installations and preserve modified files.
+The complete **0.2.0 IPM package** supports Linux IRIS 2026.2 in `USER`: gateway,
+UI and authenticated adapter. See the [package installation guide](IPM.md) for
+registry setup, `zpm "install iris-fieldwork -v"` and the foreground launcher.
+A clean consumer installed solely from the public community registry and passed
+authenticated access, anonymous-denial and all six section checks; see the
+[published verification](runtime/ipm-community-validation.json). The package
+creates no demo data or credentials. Its ownership checks refuse existing manual
+installations and preserve modified files. Publication does not establish an
+awarded contest bonus or prize.
+
+### Docker alternative
 
 Requires Docker with Linux containers and Python 3.10 or newer. The host CPU must satisfy IRIS 2026.2's x86-64-v3 requirements (AVX/AVX2/BMI/BMI2). The IRIS image and Python gateway use separate processes; both HTTP ports bind to loopback.
 

@@ -1,9 +1,11 @@
 # Package-manager installation
 
-The `0.2.0` package candidate includes the actual Python gateway, browser assets,
+The published `0.2.0` package includes the actual Python gateway, browser assets,
 Embedded Python telemetry module and ObjectScript REST adapter. It is separate
-from the synthetic browser preview. Registry publication and contest bonus
-approval are not established by the presence of `module.xml`.
+from the synthetic browser preview. A clean consumer installed this version from
+the public community registry on 24 September 2026; see
+[registry verification](runtime/ipm-community-validation.json). No awarded
+contest bonus or prize is claimed.
 
 ## Requirements
 
@@ -22,7 +24,37 @@ The package deliberately refuses to adopt an existing manually installed
 instance for evaluating this installation route. The existing Docker setup in
 the README remains available and must not be overlaid with this package.
 
-## Load the source candidate
+## Install from the community registry
+
+In the `USER` IRIS terminal, inspect the configured repositories:
+
+```objectscript
+zpm "repo -list"
+```
+
+The official IPM 0.10.9 XML client used in the clean test initially had no
+repositories. For a fresh client in that state, initialize its community entry:
+
+```objectscript
+zpm "repo -r -n registry -reset-defaults"
+```
+
+This uses IPM's vendor defaults for `https://pm.community.intersystems.com`.
+If repositories already exist, confirm the official community registry is
+enabled rather than replacing a deliberately configured private entry.
+The production endpoint is the domain root; the test registry's `/registry/`
+path must not be copied onto the production domain.
+
+Install the package by name:
+
+```objectscript
+zpm "install iris-fieldwork -v"
+```
+
+This command installed 0.2.0 with only the official community registry configured,
+without a copied application source tree or a test/local repository.
+
+## Alternative: load the source
 
 Clone this repository onto the IRIS host. In the `USER` IRIS terminal:
 
@@ -30,7 +62,9 @@ Clone this repository onto the IRIS host. In the `USER` IRIS terminal:
 zpm "load /absolute/path/to/iris-fieldwork -v"
 ```
 
-The installer prints the absolute path to `tools/start_installed.py`. It installs
+## Start the installed gateway
+
+Either installation route prints the absolute path to `tools/start_installed.py`. It installs
 the complete application beneath the IRIS manager directory's
 `fieldwork-ipm/USER/` directory and creates a password-authenticated
 `/fieldwork/runtime` application. It creates no accounts, credentials,
@@ -78,9 +112,9 @@ Package removal is intended to remove its own files, adapter classes,
 configuration and web application. It does not undo administrative actions
 previously performed through Fieldwork or alter the independent Docker setup.
 
-The registry command `zpm "install iris-fieldwork"` must be verified after
-publication before it is advertised as available. A local load or archive alone
-does not establish community-registry availability or an awarded contest bonus.
+Community-registry installation is verified for the platform and client above.
+It does not establish suitability for a production environment or an awarded
+contest bonus.
 
 Updates must be performed with the gateway stopped. If an update changes the
 Embedded Python telemetry module, restart the IRIS instance during a planned

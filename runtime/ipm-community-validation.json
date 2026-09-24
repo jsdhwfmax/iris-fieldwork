@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "package": "iris-fieldwork",
+  "version": "0.2.0",
+  "verified_date": "2026-09-24",
+  "platform": {
+    "os": "Linux",
+    "iris": "2026.2 Community",
+    "namespace": "USER",
+    "ipm": "0.10.9"
+  },
+  "publication_notice": {
+    "sender": "noreply@openexchange.intersystems.com",
+    "subject": "IPM publishing success",
+    "received_at_sydney": "2026-09-24 13:46"
+  },
+  "installation": {
+    "registry": "https://pm.community.intersystems.com",
+    "registry_class": "official production community registry",
+    "package": "iris-fieldwork",
+    "installed_version": "0.2.0",
+    "command": "install iris-fieldwork -v",
+    "success": true,
+    "source_copied": false,
+    "test_or_local_registry_configured": false,
+    "initial_client_had_no_repositories": true,
+    "setup_command": "repo -r -n registry -reset-defaults"
+  },
+  "registry_setup": {
+    "only_official_community_repository_configured": true,
+    "credentials_supplied": false,
+    "vendor_default_source": "https://github.com/intersystems/ipm/blob/v0.10.9/src/cls/IPM/Repo/Remote/Definition.cls",
+    "note": "Fresh XML client initially had no repositories. Vendor reset-defaults configured the production domain root. The test registry /registry/ suffix is not valid on the production domain."
+  },
+  "upstream_access_checks": [
+    {
+      "path": "/api/admin/info",
+      "authenticated": true,
+      "status": 200,
+      "application_errors": 0
+    },
+    {
+      "path": "/fieldwork/runtime/metrics",
+      "authenticated": true,
+      "status": 200,
+      "application_errors": 0
+    },
+    {
+      "path": "/fieldwork/runtime/logs",
+      "authenticated": true,
+      "status": 200,
+      "application_errors": 0
+    },
+    {
+      "path": "/fieldwork/runtime/task-states",
+      "authenticated": true,
+      "status": 200,
+      "application_errors": 0
+    },
+    {
+      "path": "/api/admin/info",
+      "authenticated": false,
+      "status": 401
+    },
+    {
+      "path": "/fieldwork/runtime/metrics",
+      "authenticated": false,
+      "status": 401
+    },
+    {
+      "path": "/fieldwork/runtime/logs",
+      "authenticated": false,
+      "status": 401
+    },
+    {
+      "path": "/fieldwork/runtime/task-states",
+      "authenticated": false,
+      "status": 401
+    }
+  ],
+  "gateway": {
+    "route_count": 11,
+    "routes": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/app.js",
+        "status": 200
+      },
+      {
+        "path": "/styles.css",
+        "status": 200
+      },
+      {
+        "path": "/api/status",
+        "status": 200
+      },
+      {
+        "path": "/api/explorer",
+        "status": 200
+      },
+      {
+        "path": "/api/section/web",
+        "status": 200
+      },
+      {
+        "path": "/api/section/permissions",
+        "status": 200
+      },
+      {
+        "path": "/api/section/security",
+        "status": 200
+      },
+      {
+        "path": "/api/section/tasks",
+        "status": 200
+      },
+      {
+        "path": "/api/section/system",
+        "status": 200
+      },
+      {
+        "path": "/api/section/logs",
+        "status": 200
+      }
+    ],
+    "section_count": 6,
+    "resource_checks": 24,
+    "resource_count_note": "Counts occurrences across sections; task history appears twice.",
+    "all_resource_states": "ok",
+    "exit_code": 0,
+    "credential_in_output": false
+  },
+  "limits": [
+    "Disposable clean consumer; original instance was not modified.",
+    "Disposable test credentials and loopback bindings; no public administrative service.",
+    "These checks establish package distribution and functionality on the specified environment, not a contest bonus or prize."
+  ],
+  "cleanup": {
+    "consumer_stopped": true,
+    "virtual_machine_stopped": true,
+    "original_container_unchanged": true,
+    "data_preserved": true
+  },
+  "previous_lifecycle_and_test_registry_evidence": "ipm-validation.json"
+}

@@ -375,11 +375,12 @@
     "data_preserved": true
   },
   "limits": [
-    "Production community-registry publication and default-repository installation are not verified.",
+    "Production-registry installation was not part of this earlier test-registry record; see ipm-community-validation.json for the subsequent successful verification.",
     "No contest packaging bonus, prize, payment or revenue is established by these checks.",
     "Supported IPM scope tested here: Linux, IRIS 2026.2 and USER namespace.",
     "The foreground gateway binds loopback only; installation creates no credentials or background service.",
     "The targeted Docker fallback check does not replace earlier full Docker/Compose validation.",
     "Terminal-only observations are explicitly distinguished from retained logs."
-  ]
+  ],
+  "later_production_registry_verification": "ipm-community-validation.json"
 }
