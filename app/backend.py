@@ -28,7 +28,7 @@ import permission_ops
 import security_ops
 import log_ops
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 SOURCE = {"repository": "https://github.com/intersystems-community/sysadmin-api-specification",
           "commit": "f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34"}
 PREFIX = "/api/admin"

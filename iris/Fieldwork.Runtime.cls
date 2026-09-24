@@ -36,15 +36,23 @@ ClassMethod Logs() As %Status
 
 ClassMethod Collect(kind As %String) As %String [ Language = python ]
 {
+    import iris
     import sys
-    if '/opt/fieldwork' not in sys.path:
-        sys.path.insert(0, '/opt/fieldwork')
+    python_path = iris.cls('Fieldwork.Runtime').PythonPath()
+    if python_path not in sys.path:
+        sys.path.insert(0, python_path)
     import fieldwork_runtime
     if kind == 'metrics':
         return fieldwork_runtime.metrics()
     if kind == 'logs':
         return fieldwork_runtime.logs()
     raise ValueError('Unknown collection')
+}
+
+/// IPM records its owned installation path; the Docker image retains its path.
+ClassMethod PythonPath() As %String
+{
+    Quit $Get(^FieldworkPackage("pythonPath"),"/opt/fieldwork")
 }
 
 /// Cross-check state directly against task objects. The shipped v2 task list

@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "application": "IRIS Fieldwork",
+  "package": "iris-fieldwork",
+  "package_version": "0.2.0",
+  "validation_date": "2026-09-24",
+  "generated_at_utc": "2026-09-24T03:42:18.287592+00:00",
+  "environment": {
+    "operating_system": "Linux",
+    "iris_edition": "Community",
+    "iris_version": "2026.2",
+    "ipm_version": "0.10.9",
+    "embedded_python_version": "3.12.3",
+    "installation_namespace": "USER",
+    "isolation": "Disposable local containers with loopback HTTP bindings"
+  },
+  "source_snapshot": {
+    "algorithm": "SHA-256",
+    "captured_at_utc": "2026-09-24T03:42:31.939788+00:00",
+    "scope": "Current public implementation and test files, including LF-normalized module.xml. These hashes identify this source snapshot, not a signed build or production-registry artifact; newline-only normalization may differ from earlier test archives.",
+    "files": {
+      "module.xml": "db3f1d56cd406cec5ea7e2cf94ec4f200ce03100e725bdbcadc9aa5688e19ff8",
+      "iris/Fieldwork.Package.cls": "3da36d55f4a205e66437c7e96709d1b567bff694df1d2e89d72d9a3c2e3c2e3b",
+      "iris/Fieldwork.Runtime.cls": "459d9e7c710c22ec7786baf6c3babb91442dab4180d77d4c6ba2d56fc7cb258f",
+      "iris/fieldwork_runtime.py": "bb494522ef3817181fbc3be4d4b02aed3c22fea89eda2a0d6854382630ab555f",
+      "tools/start_installed.py": "eee753e84ba922591f0b866c3e710eea41682e189b3610ce335fe89c92d03cfe",
+      "tools/test_start_installed.py": "b6825e4208ea2a62c9be85c7d6726280ca8098aba2714580712465906e6f54c6",
+      "tools/test_package_files.py": "778d326136aa9a83e5736f3b5cde8030bffe36b3595c2df79549aee27077f8e9",
+      "app/backend.py": "7972eca97f6a7440680ce23275030bcbe9eb6bbb88bd8a5903e8ca6f3bf695bf",
+      "app/log_ops.py": "e27d66400bbc8b1ad4dff1d74e4056090878a48dbb51a86239f138282cbf4182",
+      "app/permission_ops.py": "f7bbc982ff593fe12f8587e2114ba593e0ae2b9e3acc9cd8ea8fb36af91f586d",
+      "app/security_ops.py": "8ff562beb85e84d8cd20a9947420915eebbfe72540daab9d89a53c564768639e",
+      "app/static/index.html": "b194efaa77a653dbabb6a223198814373543647de0a8986ea16b26de375a9584",
+      "app/static/app.js": "d13888549d5d58041daf069c98aa90e7ee54ec5f310c27bd89ff5c186f50a047",
+      "app/static/styles.css": "4294750acbdaaf140ea52c6f85f56fdbb14d8b401d2fe6bf73bb415ee2dc6b69"
+    }
+  },
+  "python_tests": {
+    "command": "python -m unittest discover -s tools -p test_*.py",
+    "linux": {
+      "tests_run": 31,
+      "passed": 31,
+      "skipped": 0
+    },
+    "windows": {
+      "tests_run": 31,
+      "passed": 28,
+      "skipped": 3,
+      "skip_reason": "Host denied symlink creation; those cases passed on Linux."
+    },
+    "evidence_type": "observed_terminal_output",
+    "evidence_note": "Supervising agent observed both runs on 2026-09-24; their terminal output was not retained as separate logs.",
+    "coverage": "Installed launcher, credential input handling, loopback restriction, ownership/hash checks, staging failure cleanup and replacement rollback."
+  },
+  "lifecycle": {
+    "source_load": "passed",
+    "repeat_load": "passed",
+    "archive_export": "passed",
+    "uninstall": "passed",
+    "uninstall_cleanup": "Owned runtime application, installation directory, two classes and package state removed.",
+    "preservation_checks": [
+      {
+        "scenario": "Added user file",
+        "update": "refused",
+        "uninstall": "refused",
+        "added_file_preserved": true
+      },
+      {
+        "scenario": "Changed runtime application description",
+        "update": "refused",
+        "uninstall": "refused"
+      },
+      {
+        "scenario": "foreign-fieldwork.package-refused",
+        "passed": true
+      },
+      {
+        "scenario": "foreign-fieldwork.runtime-refused",
+        "passed": true
+      },
+      {
+        "scenario": "foreign-webapp-refused",
+        "passed": true
+      },
+      {
+        "scenario": "foreign-directory-refused",
+        "passed": true
+      }
+    ],
+    "namespace_guard": {
+      "scope": "Guard expression evaluated in %SYS; no full unsupported-namespace installation claimed.",
+      "result": "REFUSED",
+      "helper_present": false
+    },
+    "evidence_type": "archived_private_logs_and_asserted_test_records"
+  },
+  "authorization": {
+    "adapter_and_admin_http": [
+      {
+        "path": "/api/admin/info",
+        "authenticated": true,
+        "status": 200,
+        "application_errors": 0
+      },
+      {
+        "path": "/fieldwork/runtime/metrics",
+        "authenticated": true,
+        "status": 200,
+        "application_errors": 0
+      },
+      {
+        "path": "/fieldwork/runtime/logs",
+        "authenticated": true,
+        "status": 200,
+        "application_errors": 0
+      },
+      {
+        "path": "/fieldwork/runtime/task-states",
+        "authenticated": true,
+        "status": 200,
+        "application_errors": 0
+      },
+      {
+        "path": "/api/admin/info",
+        "authenticated": false,
+        "status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/metrics",
+        "authenticated": false,
+        "status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/logs",
+        "authenticated": false,
+        "status": 401
+      },
+      {
+        "path": "/fieldwork/runtime/task-states",
+        "authenticated": false,
+        "status": 401
+      }
+    ],
+    "limited_account": {
+      "checks": [
+        {
+          "path": "/fieldwork/runtime/metrics",
+          "authenticated_without_operate_status": 401
+        },
+        {
+          "path": "/fieldwork/runtime/logs",
+          "authenticated_without_operate_status": 401
+        },
+        {
+          "path": "/fieldwork/runtime/task-states",
+          "authenticated_without_operate_status": 401
+        }
+      ],
+      "credentials_validated": true,
+      "operate_privilege": false,
+      "test_user_removed": true,
+      "credential_printed": false
+    }
+  },
+  "clean_consumer_registry_install": {
+    "registry": "https://test.pm.community.intersystems.com/registry/",
+    "registry_class": "official test registry",
+    "command": "install fieldwork-test/iris-fieldwork -v",
+    "installed_version": "0.2.0",
+    "success": true,
+    "application_source_copied": false,
+    "setup": "Fresh vendor-only IRIS base and official IPM client; application downloaded by package name from the test registry.",
+    "evidence_type": "independent_consumer_install_log_and_HTTP_results"
+  },
+  "installed_gateway": {
+    "route_count": 11,
+    "routes": [
+      {
+        "path": "/",
+        "http_status": 200
+      },
+      {
+        "path": "/app.js",
+        "http_status": 200
+      },
+      {
+        "path": "/styles.css",
+        "http_status": 200
+      },
+      {
+        "path": "/api/status",
+        "http_status": 200
+      },
+      {
+        "path": "/api/explorer",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/web",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/permissions",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/security",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/tasks",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/system",
+        "http_status": 200
+      },
+      {
+        "path": "/api/section/logs",
+        "http_status": 200
+      }
+    ],
+    "section_count": 6,
+    "resource_checks": 24,
+    "resource_count_note": "Counts resource occurrences across sections; task history appears twice.",
+    "sections": [
+      {
+        "section": "web",
+        "resources": [
+          {
+            "key": "web_apps",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "section": "permissions",
+        "resources": [
+          {
+            "key": "roles",
+            "state": "ok"
+          },
+          {
+            "key": "users",
+            "state": "ok"
+          },
+          {
+            "key": "resources",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "section": "security",
+        "resources": [
+          {
+            "key": "wallet_collections",
+            "state": "ok"
+          },
+          {
+            "key": "x509_credentials",
+            "state": "ok"
+          },
+          {
+            "key": "ssl_configurations",
+            "state": "ok"
+          },
+          {
+            "key": "oauth_servers",
+            "state": "ok"
+          },
+          {
+            "key": "oauth_clients",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "section": "tasks",
+        "resources": [
+          {
+            "key": "tasks",
+            "state": "ok"
+          },
+          {
+            "key": "task_states",
+            "state": "ok"
+          },
+          {
+            "key": "task_manager",
+            "state": "ok"
+          },
+          {
+            "key": "upcoming",
+            "state": "ok"
+          },
+          {
+            "key": "task_history",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "section": "system",
+        "resources": [
+          {
+            "key": "runtime_metrics",
+            "state": "ok"
+          },
+          {
+            "key": "processes",
+            "state": "ok"
+          },
+          {
+            "key": "devices",
+            "state": "ok"
+          },
+          {
+            "key": "databases",
+            "state": "ok"
+          },
+          {
+            "key": "system_usage",
+            "state": "ok"
+          },
+          {
+            "key": "shared_memory",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "section": "logs",
+        "resources": [
+          {
+            "key": "runtime_logs",
+            "state": "ok"
+          },
+          {
+            "key": "task_history",
+            "state": "ok"
+          },
+          {
+            "key": "journal_files",
+            "state": "ok"
+          },
+          {
+            "key": "audit_events",
+            "state": "ok"
+          }
+        ]
+      }
+    ],
+    "connected_status": true,
+    "gateway_exit_code": 0,
+    "credential_in_output": false
+  },
+  "docker_fallback": {
+    "scope": "Targeted adapter compatibility check only; no complete Docker rebuild claimed.",
+    "package_state_absent": true,
+    "python_path": "/opt/fieldwork",
+    "collect_metrics_returned_result_object": true,
+    "temporary_class_removed": true,
+    "evidence_type": "observed_terminal_output",
+    "evidence_note": "Supervising agent observed this on 2026-09-24; output was not retained separately after a later session check."
+  },
+  "cleanup": {
+    "gateway_stopped": true,
+    "disposable_containers_stopped": true,
+    "original_container_remained_stopped": true,
+    "original_container_identity_and_start_time_unchanged": true,
+    "all_guest_containers_stopped_before_shutdown": true,
+    "guest_gracefully_shut_down": true,
+    "guest_process_exit_confirmed": true,
+    "data_preserved": true
+  },
+  "limits": [
+    "Production community-registry publication and default-repository installation are not verified.",
+    "No contest packaging bonus, prize, payment or revenue is established by these checks.",
+    "Supported IPM scope tested here: Linux, IRIS 2026.2 and USER namespace.",
+    "The foreground gateway binds loopback only; installation creates no credentials or background service.",
+    "The targeted Docker fallback check does not replace earlier full Docker/Compose validation.",
+    "Terminal-only observations are explicitly distinguished from retained logs."
+  ]
+}

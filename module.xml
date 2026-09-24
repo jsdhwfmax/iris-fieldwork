@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26">
+  <Document name="iris-fieldwork.ZPM">
+    <Module>
+      <Name>iris-fieldwork</Name>
+      <Version>0.2.0</Version>
+      <Description>IRIS Fieldwork: local administration gateway, browser UI and authenticated runtime adapter.</Description>
+      <Author><Organization>ClearRow Works</Organization><License>MIT</License></Author>
+      <Packaging>module</Packaging>
+      <SystemRequirements Version="&gt;=2026.2.0" IPMVersion="&gt;=0.10.9" PythonVersion="&gt;=3.10.0" />
+      <SourcesRoot>iris</SourcesRoot>
+      <Resource Name="Fieldwork.Package.CLS" Directory="." FilenameTranslateIdentifier="." FilenameTranslateAssociator="." FilenameExtension="cls" Format="UDL" />
+      <Resource Name="Fieldwork.Runtime.CLS" Directory="." FilenameTranslateIdentifier="." FilenameTranslateAssociator="." FilenameExtension="cls" Format="UDL" />
+      <!-- Path resources are archived without automatic copy or deletion. -->
+      <Resource Name="/app/" />
+      <Resource Name="/iris/fieldwork_runtime.py" />
+      <Resource Name="/tools/start_installed.py" />
+      <Resource Name="/README.md" />
+      <Resource Name="/IPM.md" />
+      <Resource Name="/LICENSE" />
+      <Resource Name="/NOTICE.md" />
+      <!-- Bootstrap only the installer before Reload can replace the adapter. -->
+      <Invoke Class="%SYSTEM.OBJ" Method="Load" Phase="Initialize" When="After" CheckStatus="true">
+        <Arg>#{$select(($namespace=&quot;USER&quot;)&amp;&amp;('##class(%Dictionary.ClassDefinition).%ExistsId(&quot;Fieldwork.Package&quot;)||($parameter(&quot;Fieldwork.Package&quot;,&quot;Owner&quot;)=&quot;iris-fieldwork|USER|ipm-v1&quot;)):&quot;${root}iris/Fieldwork.Package.cls&quot;,1:&quot;REFUSED")}</Arg><Arg>ck</Arg>
+      </Invoke>
+      <Invoke Class="Fieldwork.Package" Method="Preflight" Phase="Reload" When="Before" CheckStatus="true" />
+      <Invoke Class="Fieldwork.Package" Method="Install" Phase="Configure" When="After" CheckStatus="true">
+        <Arg>${root}</Arg>
+      </Invoke>
+      <Invoke Class="Fieldwork.Package" Method="Uninstall" Phase="Clean" When="Before" CheckStatus="true" />
+      <AfterInstallMessage>IRIS Fieldwork is installed. Start the foreground loopback gateway using the path printed above and an existing authorized IRIS account. No credentials or background service were created. Stop the gateway before reinstalling or uninstalling this package.</AfterInstallMessage>
+    </Module>
+  </Document>
+</Export>

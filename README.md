@@ -33,6 +33,13 @@ The preview helps explain the interface; the local installation and recorded dem
 
 ## Local installation
 
+The current source also contains a complete **0.2.0 IPM package candidate** for
+Linux IRIS 2026.2 in `USER`: gateway, UI and authenticated adapter. See the
+[package installation guide](IPM.md). Public community-registry availability is
+pending review; the command `zpm "install iris-fieldwork"` is not yet advertised
+as available. The package creates no demo data or credentials. Its ownership
+checks refuse existing manual installations and preserve modified files.
+
 Requires Docker with Linux containers and Python 3.10 or newer. The host CPU must satisfy IRIS 2026.2's x86-64-v3 requirements (AVX/AVX2/BMI/BMI2). The IRIS image and Python gateway use separate processes; both HTTP ports bind to loopback.
 
 ```sh

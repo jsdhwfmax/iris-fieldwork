@@ -10,4 +10,5 @@ runtime/__pycache__/
 .secrets/
 app/__pycache__/
 iris/__pycache__/
+tools/__pycache__/
 spec/mainspec_v2.json
