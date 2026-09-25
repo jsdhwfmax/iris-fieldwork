@@ -84,7 +84,8 @@ schema-reference check skipped; Windows passed 168 with seven documented skips.
 See the [archive validation record](runtime/archive-validation.json).
 
 Live browser interaction remains unverified: the in-app browser blocked access
-to the local test URL, and the connected Edge browser was unavailable. The code
+to the local test URL, and a later attempt after Edge reconnected was also blocked
+by Edge with `ERR_BLOCKED_BY_CLIENT`. The code
 is a draft update, not a released or newly submitted contest version. The existing
 [0.2.0 registry verification](runtime/ipm-community-validation.json), earlier
 Compose evidence and v0.1.0 videos remain historical; they do not validate this

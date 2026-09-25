@@ -316,7 +316,7 @@
   },
   "browser": {
     "verified": false,
-    "reason": "In-app browser navigation to the local test URL returned ERR_BLOCKED_BY_CLIENT; Edge was unavailable. No live archive UI success is claimed."
+    "reason": "In-app browser navigation to the local test URL returned ERR_BLOCKED_BY_CLIENT. After Edge reconnected, its local navigation also returned ERR_BLOCKED_BY_CLIENT with a visible blocked-page message. No live archive UI success is claimed."
   },
   "cleanup": {
     "test_container_stopped": true,
