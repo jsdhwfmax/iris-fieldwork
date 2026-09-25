@@ -3,7 +3,7 @@
   <Document name="iris-fieldwork.ZPM">
     <Module>
       <Name>iris-fieldwork</Name>
-      <Version>0.2.0</Version>
+      <Version>0.3.0</Version>
       <Description>IRIS Fieldwork: local administration gateway, browser UI and authenticated runtime adapter.</Description>
       <Author><Organization>ClearRow Works</Organization><License>MIT</License></Author>
       <Packaging>module</Packaging>
@@ -14,9 +14,11 @@
       <!-- Path resources are archived without automatic copy or deletion. -->
       <Resource Name="/app/" />
       <Resource Name="/iris/fieldwork_runtime.py" />
+      <Resource Name="/iris/message_archives.py" />
       <Resource Name="/tools/start_installed.py" />
       <Resource Name="/README.md" />
       <Resource Name="/IPM.md" />
+      <Resource Name="/ARCHIVES.md" />
       <Resource Name="/LICENSE" />
       <Resource Name="/NOTICE.md" />
       <!-- Bootstrap only the installer before Reload can replace the adapter. -->

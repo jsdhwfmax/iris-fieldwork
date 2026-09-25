@@ -4,6 +4,8 @@ A local operations workspace for InterSystems IRIS 2026.2. It brings web applica
 
 Version **0.2.0** is published on [InterSystems Open Exchange](https://openexchange.intersystems.com/package/IRIS-Fieldwork) and the public community IPM registry, confirmed on 24 September 2026. Three demonstration videos show the local prototype in action.
 
+The current source version, **0.3.0**, adds a [rotated message-log browser](ARCHIVES.md). Its Open Exchange and registry publication are not yet verified. Evaluate this version by loading the local source through IPM or building the Docker setup below.
+
 The browser talks to a Python gateway on loopback. IRIS credentials stay in the server process. Curated SysAdmin API calls supply instance data; an original Embedded Python/ObjectScript adapter adds Linux and container telemetry, bounded runtime logs and an independent task-state check.
 
 ## Current capabilities
@@ -15,7 +17,7 @@ The browser talks to a Python gateway on loopback. IRIS credentials stay in the 
 | Security and secrets | Wallet collection creation; write-only KeyValue secret creation, replacement and removal; wallet, X.509, TLS and OAuth configuration inspection | Secret values are never fetched for display or verification; other secret types and X.509/TLS/OAuth writes are not exposed |
 | Tasks | Inventory, activity/history, on-demand run, suspend/resume, selected-target verification and process correlation | Commands require verified user-task state; historical PID matches do not establish current identity |
 | System | Processes, devices, databases, sampled Linux CPU/memory/disk and container limits | Process and device mutations are not exposed; host/kernel measurements can exceed container limits |
-| Logs | Bounded runtime logs, task activity, and asynchronous audit/journal record metadata searches | Event payloads, session identifiers and journal global nodes/values are omitted; no complete log export or all-subsystem coverage claim |
+| Logs | Bounded runtime excerpts, rotated message-log browsing, task activity, and asynchronous audit/journal record metadata searches | Archive reads use the fixed standard Linux manager directory; compressed files are excluded. Audit/journal payloads are omitted; no complete log export or all-subsystem coverage claim |
 
 Empty data is shown as empty. Unavailable endpoints and unsupported log sources remain visible. A matching PID in historical data is not proof that it is the same current process.
 
@@ -25,18 +27,20 @@ Wallet writes require a reviewed existing collection and its current edit/use re
 
 Audit searches accept server-clock dates and single user/event filters; journal searches require an exact file from the current bounded inventory. Searches return at most 100 metadata rows. Pending searches are polled using a gateway-owned token, expire after ten minutes, and are never automatically resubmitted. A gateway holds at most 32 search tokens.
 
+In **Logs & activity**, **Browse older messages** lists eligible `messages.old_*` files in pages of 50. Selecting a filename opens a revision-checked excerpt, bounded to 64 KiB read and 80 complete UTF-8 records per page. Oversize/incomplete records are withheld and reported; pattern-based sensitive-line withholding is not universal data-loss prevention. See [archive workflow and limits](ARCHIVES.md) before using this with operational logs.
+
 ## Interactive preview
 
 The [browser preview source](docs/) runs without installing IRIS. From this repository, run `python -m http.server 8771 --bind 127.0.0.1 --directory docs` and open `http://127.0.0.1:8771`. It uses deliberately synthetic fixtures for the six areas, with local filtering, sorting and record inspection. It has no IRIS connection, administrative commands or secret entry. Its values are examples, not measurements from the tested instance.
 
-The preview helps explain the interface; the local installation and recorded demonstrations below show the actual IRIS integration. The static preview is maintained separately in `docs/` and does not change the local gateway. No online-demo bonus is claimed as awarded.
+The preview helps explain the interface; the local installation and recorded demonstrations below show the actual IRIS integration. The static preview is maintained separately in `docs/` and does not include the new archive browser. Hosted preview access remains private. No online-demo bonus is claimed as awarded.
 
 ## Local installation
 
-The complete **0.2.0 IPM package** supports Linux IRIS 2026.2 in `USER`: gateway,
+For the **0.3.0 source**, use [IPM source loading](IPM.md#load-the-030-source) or the Docker alternative below. The existing published **0.2.0 IPM package** supports Linux IRIS 2026.2 in `USER`: gateway,
 UI and authenticated adapter. See the [package installation guide](IPM.md) for
 registry setup, `zpm "install iris-fieldwork -v"` and the foreground launcher.
-A clean consumer installed solely from the public community registry and passed
+A clean consumer installed **0.2.0** solely from the public community registry and passed
 authenticated access, anonymous-denial and all six section checks; see the
 [published verification](runtime/ipm-community-validation.json). The package
 creates no demo data or credentials. Its ownership checks refuse existing manual
@@ -59,7 +63,7 @@ Open **http://127.0.0.1:8766**. The IRIS gateway is at port 52773. `.secrets/` c
 
 On Linux, preparation creates the credential directory with mode `0700` and files with mode `0600`. A networkless initialization service copies the password into a protected volume owned by the IRIS runtime user with mode `0400`; IRIS mounts that volume read-only. Re-running preparation preserves existing credentials. To choose another IRIS host port, pass `--port PORT` to `prepare_local.py` and set `IRIS_HOST_PORT` to the same value when running Compose.
 
-The Dockerfile pins the tested image digest and repairs two missing initialization paths using files already bundled in that image. It compiles the adapter and creates these local demonstration fixtures if absent:
+The Dockerfile pins the tested image digest and repairs two missing initialization paths using files already bundled in that image. Its existing copy of `iris/` includes `message_archives.py`; no extra download or copy step is needed for the archive reader. It compiles the adapter and creates these local demonstration fixtures if absent:
 
 - An on-demand `Fieldwork demonstration` task that increments only its own `FieldworkDemo` counter in USER.
 - `FieldworkDemoResource`, with no public permissions, and an unassigned `FieldworkDemoRole` for grant/revoke demonstrations.
@@ -82,6 +86,8 @@ For an existing instance, install the adapter deliberately and set `IRIS_BASE_UR
 Development validation used a disposable Linux container inside a QEMU VM. VM tooling, images, binaries and saved instance credentials are excluded from the published source. The optional metadata-only API probe is `runtime/probe.py`.
 
 ## Validation and known differences
+
+The dated validation and v0.1.0 videos below describe earlier functionality. They do not establish validation or publication of the new 0.3.0 archive workflow; see [ARCHIVES.md](ARCHIVES.md#verification-status) for its separate status.
 
 At the latest 19 September validation, 105 application tests and six composed runtime-log tests passed. The application tests use isolated fake transports and local HTTP fixtures. Run them from this directory:
 
@@ -120,10 +126,10 @@ Use the walkthrough to review each operation and its limits before running the d
 
 ## Sources and authorship
 
-The project responds to the six operations areas in the official [Build Your Own Management Portal contest brief](https://community.intersystems.com/post/intersystems-programming-contest-build-your-own-management-portal). This is its motivation link; no Ideas Portal idea or bonus is claimed.
+The project responds to the six operations areas in the official [Build Your Own Management Portal contest brief](https://community.intersystems.com/post/intersystems-programming-contest-build-your-own-management-portal). The 0.3.0 rotated-log browser additionally addresses the older-message access need in [Community Opportunity DPI-I-966](https://ideas.intersystems.com/ideas/DPI-I-966). It implements that workflow inside Fieldwork; it does not modify InterSystems System Management Portal. No idea-bonus decision or award is claimed.
 
 Original project code is available under the [MIT license](LICENSE). See [NOTICE.md](NOTICE.md) for the separate IRIS software terms, specification attribution and AI-assistance disclosure.
 
 The gateway uses operation metadata from the [InterSystems SysAdmin API specification](https://github.com/intersystems-community/sysadmin-api-specification), reviewed at commit `f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34`. The vendored working copy is excluded from publication because a redistribution license has not been established. No upstream source implementation is copied into the gateway.
 
-This project was developed with AI coding assistance. The entrant confirmed review and understanding of the app and walkthrough before submitting and remains responsible for the work under the [official contest AI guidance](https://community.intersystems.com/post/guidelines-using-generative-ai-when-writing-posts-developer-community).
+This project was developed with AI coding assistance. The entrant confirmed review and understanding of the original submitted app and walkthrough and remains responsible for the work under the [official contest AI guidance](https://community.intersystems.com/post/guidelines-using-generative-ai-when-writing-posts-developer-community). That earlier review does not establish review of later source changes.
