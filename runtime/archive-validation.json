@@ -1,0 +1,334 @@
+{
+  "checked_date": "2026-09-25",
+  "version": "0.3.0",
+  "scope": "Draft source package in a disposable Linux IRIS 2026.2 instance; synthetic archive files only.",
+  "installation": {
+    "ipm_version": "0.10.9",
+    "source_package_load": true,
+    "archive_module_owned_and_hash_matched": true,
+    "export_includes_archive_module_and_guide": true,
+    "registry_publication_verified": false
+  },
+  "runtime": {
+    "checks": [
+      {
+        "check": "inventory_and_paging",
+        "passed": true,
+        "synthetic_files": 55,
+        "pages": [
+          {
+            "offset": 0,
+            "count": 50,
+            "nextOffset": 50,
+            "total": 55
+          },
+          {
+            "offset": 50,
+            "count": 5,
+            "nextOffset": null,
+            "total": 55
+          }
+        ],
+        "compressed_excluded": true
+      },
+      {
+        "check": "content_paging_redaction_and_stability",
+        "passed": true,
+        "records": 95,
+        "redacted": 2,
+        "pages": [
+          {
+            "offset": 0,
+            "count": 80,
+            "nextOffset": 2908
+          },
+          {
+            "offset": 2908,
+            "count": 15,
+            "nextOffset": null
+          }
+        ],
+        "file_sha256_unchanged": true,
+        "eof_empty": true
+      },
+      {
+        "check": "stale_revision_withheld",
+        "passed": true
+      },
+      {
+        "check": "missing_archive_reported",
+        "passed": true
+      },
+      {
+        "check": "invalid_unknown_duplicate_traversal_requests",
+        "passed": true,
+        "cases": 8
+      },
+      {
+        "check": "anonymous_denied",
+        "path": "/fieldwork/runtime/message-archives",
+        "status": 401
+      },
+      {
+        "check": "anonymous_denied",
+        "path": "/fieldwork/runtime/message-archive",
+        "status": 401
+      },
+      {
+        "check": "valid_account_without_operate_denied",
+        "path": "/fieldwork/runtime/message-archives",
+        "status": 401,
+        "credentials_validated": true,
+        "operate_privilege": false
+      },
+      {
+        "check": "valid_account_without_operate_denied",
+        "path": "/fieldwork/runtime/message-archive",
+        "status": 401,
+        "credentials_validated": true,
+        "operate_privilege": false
+      }
+    ],
+    "limited_test_user_removed": true,
+    "all_passed": true
+  },
+  "installed_gateway": {
+    "checks": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/app.js",
+        "status": 200
+      },
+      {
+        "path": "/styles.css",
+        "status": 200
+      },
+      {
+        "path": "/api/status",
+        "status": 200,
+        "connected": true,
+        "version": "0.3.0"
+      },
+      {
+        "path": "/api/explorer",
+        "status": 200
+      },
+      {
+        "path": "/api/section/web",
+        "status": 200,
+        "resources": [
+          {
+            "key": "web_apps",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "path": "/api/section/permissions",
+        "status": 200,
+        "resources": [
+          {
+            "key": "roles",
+            "state": "ok"
+          },
+          {
+            "key": "users",
+            "state": "ok"
+          },
+          {
+            "key": "resources",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "path": "/api/section/security",
+        "status": 200,
+        "resources": [
+          {
+            "key": "wallet_collections",
+            "state": "ok"
+          },
+          {
+            "key": "x509_credentials",
+            "state": "ok"
+          },
+          {
+            "key": "ssl_configurations",
+            "state": "ok"
+          },
+          {
+            "key": "oauth_servers",
+            "state": "ok"
+          },
+          {
+            "key": "oauth_clients",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "path": "/api/section/tasks",
+        "status": 200,
+        "resources": [
+          {
+            "key": "tasks",
+            "state": "ok"
+          },
+          {
+            "key": "task_states",
+            "state": "ok"
+          },
+          {
+            "key": "task_manager",
+            "state": "ok"
+          },
+          {
+            "key": "upcoming",
+            "state": "ok"
+          },
+          {
+            "key": "task_history",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "path": "/api/section/system",
+        "status": 200,
+        "resources": [
+          {
+            "key": "runtime_metrics",
+            "state": "ok"
+          },
+          {
+            "key": "processes",
+            "state": "ok"
+          },
+          {
+            "key": "devices",
+            "state": "ok"
+          },
+          {
+            "key": "databases",
+            "state": "ok"
+          },
+          {
+            "key": "system_usage",
+            "state": "ok"
+          },
+          {
+            "key": "shared_memory",
+            "state": "ok"
+          }
+        ]
+      },
+      {
+        "path": "/api/section/logs",
+        "status": 200,
+        "resources": [
+          {
+            "key": "runtime_logs",
+            "state": "ok"
+          },
+          {
+            "key": "task_history",
+            "state": "ok"
+          },
+          {
+            "key": "journal_files",
+            "state": "ok"
+          },
+          {
+            "key": "audit_events",
+            "state": "ok"
+          }
+        ]
+      }
+    ],
+    "archive_inventory_pages": [
+      {
+        "offset": 0,
+        "count": 50,
+        "nextOffset": 50
+      },
+      {
+        "offset": 50,
+        "count": 4,
+        "nextOffset": null
+      }
+    ],
+    "archive_content_pages": [
+      {
+        "offset": 0,
+        "count": 80,
+        "nextOffset": 2908
+      },
+      {
+        "offset": 2908,
+        "count": 15,
+        "nextOffset": null
+      }
+    ],
+    "archive_records": 95,
+    "redacted_records": 2,
+    "all_passed": true
+  },
+  "unit_tests": {
+    "linux": {
+      "app": {
+        "run": 113,
+        "passed": 112,
+        "skipped": 1
+      },
+      "iris": {
+        "run": 27,
+        "passed": 27,
+        "skipped": 0
+      },
+      "tools": {
+        "run": 35,
+        "passed": 35,
+        "skipped": 0
+      }
+    },
+    "windows": {
+      "app": {
+        "run": 113,
+        "passed": 112,
+        "skipped": 1
+      },
+      "iris": {
+        "run": 27,
+        "passed": 24,
+        "skipped": 3
+      },
+      "tools": {
+        "run": 35,
+        "passed": 32,
+        "skipped": 3
+      }
+    },
+    "skips": "One optional vendor-schema reference check; Windows additionally skips six POSIX/symlink checks."
+  },
+  "browser": {
+    "verified": false,
+    "reason": "In-app browser navigation to the local test URL returned ERR_BLOCKED_BY_CLIENT; Edge was unavailable. No live archive UI success is claimed."
+  },
+  "cleanup": {
+    "test_container_stopped": true,
+    "all_containers_stopped": true,
+    "original_unchanged": true,
+    "data_retained": true,
+    "vm_stopped": true
+  },
+  "limitations": [
+    "No 0.3.0 community-registry install or new full Docker build was performed.",
+    "Pattern-based redaction is not universal data-loss prevention.",
+    "The synthetic preview and prior recorded videos do not include archive browsing.",
+    "No contest resubmission, awarded bonus, prize or revenue is established."
+  ]
+}

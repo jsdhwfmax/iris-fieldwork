@@ -244,7 +244,7 @@
     let content='';state.sourceActionNotes=[];
     if(state.section==='permissions')content=actionButton('resource.create','Create resource','create-resource');
     if(state.section==='security'&&resource.key==='wallet_collections')content=actionButton('wallet.collection.create','New collection','create-collection');
-    if(state.section==='logs')content=`<button class="button button-small" data-action="log-query" data-kind="audit">Search audit records</button>${resource.key==='journal_files'?'<button class="button button-small" data-action="log-query" data-kind="journal">Search journal</button>':''}`;
+    if(state.section==='logs')content=`<button class="button button-small" data-action="message-archives">Browse older messages</button><button class="button button-small" data-action="log-query" data-kind="audit">Search audit records</button>${resource.key==='journal_files'?'<button class="button button-small" data-action="log-query" data-kind="journal">Search journal</button>':''}`;
     $('resource-actions').innerHTML=content;
     const ids=state.section==='permissions'?['resource.create']:state.section==='security'&&resource.key==='wallet_collections'?['wallet.collection.create']:[];
     state.sourceActionNotes=ids.map(actionDefinition).filter(definition=>definition&&!definition.enabled&&definition.reason).map(definition=>definition.reason);
@@ -411,6 +411,108 @@
     openDrawer('oauth-client-prompt','Inspect OAuth client','READ CONFIGURATION');
     $('drawer-body').innerHTML=`<p class="drawer-intro">Enter the configured client application name. Only permitted metadata will be returned.</p><form id="oauth-client-form">${formField('oauth-client-name','Client application name')}${formFooter('Inspect client')}</form>`;
     $('oauth-client-form').addEventListener('submit',event=>{event.preventDefault();if(event.target.reportValidity())openInspection('oauth_client',$('oauth-client-name').value.trim());});
+  }
+  function showMessageArchives() {
+    openDrawer('message-archives','Older message logs','READ-ONLY ARCHIVE BROWSER',true);
+    state.messageArchives={view:'inventory',request:0,busy:false,inventory:null,inventoryOffsets:[0],content:null,contentOffsets:[0],selected:null};
+    return loadMessageInventory([0]);
+  }
+  function archiveActive(browser,request=browser.request) {
+    return state.drawer==='message-archives'&&state.messageArchives===browser&&browser.request===request;
+  }
+  const archiveOffset = value => Number.isSafeInteger(value)&&value>=0;
+  function archiveNext(data) {return archiveOffset(data?.nextOffset)&&data.nextOffset>data.offset?data.nextOffset:null;}
+  function archivePageValid(data,offset) {return data.offset===offset&&(data.nextOffset===null||archiveNext(data)!==null);}
+  function archiveInvalid() {return {state:'unavailable',error:{message:'The archive service returned an invalid page. Refresh the file list and try again.'},data:null};}
+  function archiveFailure(error) {
+    return error.payload||{state:'unavailable',error:{message:'The local archive service could not be reached. Check the connection, then try again.'},data:null};
+  }
+  async function loadMessageInventory(offsets) {
+    const browser=state.messageArchives;if(!browser||state.drawer!=='message-archives')return;
+    const offset=offsets.at(-1);if(!archiveOffset(offset))return;
+    const request=++browser.request;
+    browser.view='inventory';browser.busy=true;browser.inventory=null;browser.selected=null;browser.inventoryOffsets=[...offsets];
+    renderMessageArchives(browser);
+    try {
+      let result=await api(`/api/message-archives?offset=${offset}`);
+      if(!archiveActive(browser,request))return;
+      if(good(result)&&result.data?.state==='ok'&&(!archivePageValid(result.data,offset)||!Array.isArray(result.data.files)||result.data.files.length>50||result.data.files.some(file=>!file||typeof file!=='object')))result=archiveInvalid();
+      browser.inventory=result;
+    } catch(error) {if(archiveActive(browser,request))browser.inventory=archiveFailure(error);}
+    finally {if(archiveActive(browser,request)){browser.busy=false;renderMessageArchives(browser);}}
+  }
+  async function loadMessageArchive(file,offsets=[0]) {
+    const browser=state.messageArchives;if(!browser||state.drawer!=='message-archives')return;
+    const offset=offsets.at(-1);
+    if(!file||typeof file.name!=='string'||!file.name||!/^[a-f0-9]{64}$/.test(file.revision||'')||!archiveOffset(offset))return;
+    const request=++browser.request;
+    browser.view='file';browser.busy=true;browser.selected=file;browser.content=null;browser.contentOffsets=[...offsets];
+    renderMessageArchives(browser);
+    try {
+      const params=new URLSearchParams({name:file.name,revision:file.revision,offset:String(offset)});
+      let result=await api(`/api/message-archive?${params}`);
+      if(!archiveActive(browser,request))return;
+      if(good(result)&&result.data?.state==='ok'&&(!archivePageValid(result.data,offset)||!Array.isArray(result.data.records)||result.data.records.some(record=>!record||typeof record.line!=='string')||result.data.name!==file.name||result.data.revision!==file.revision))result=archiveInvalid();
+      browser.content=result;
+    } catch(error) {if(archiveActive(browser,request))browser.content=archiveFailure(error);}
+    finally {if(archiveActive(browser,request)){browser.busy=false;renderMessageArchives(browser);}}
+  }
+  function archiveError(result) {
+    const status=good(result)?result.data?.state:result?.state;
+    const titles={changed:'This file changed',not_found:'File no longer available',invalid:'Archive request rejected',unsupported:'Archive browsing is not supported',forbidden:'Archive access denied',unauthorized:'Authentication needed'};
+    const fallback=status==='changed'?'Refresh the file list and select the file again. Pages from different revisions are not combined.':status==='not_found'?'The selected file may have been removed or rotated. Refresh the file list.':'The instance did not return a readable archive page. Check source availability and try again.';
+    return empty(titles[status]||'Archive source unavailable',result?.data?.message||result?.error?.message||fallback,'warning');
+  }
+  function archiveTime(value) {
+    const date=value?new Date(value):null;
+    return date&&!Number.isNaN(date.getTime())?date.toISOString().replace('T',' ').replace('Z',' UTC'):'Modification time not supplied';
+  }
+  function archiveCoverage(result) {
+    const notes=Array.isArray(result?.limitations)?result.limitations.filter(note=>typeof note==='string'):[];
+    return `${typeof result?.data?.scope==='string'?`<p class="archive-caption">${esc(result.data.scope)}</p>`:''}${notes.length?`<ul class="coverage-notes">${notes.map(note=>`<li>${esc(note)}</li>`).join('')}</ul>`:''}`;
+  }
+  function archivePaging(kind,offsets,data) {
+    return `<nav class="archive-paging" aria-label="${kind==='list'?'Archive file list':'Message content'} pages"><button class="button button-small" data-action="archive-${kind}-previous" ${offsets.length<2?'disabled':''}>${svg('left')}Previous</button><span>Page ${offsets.length}</span><button class="button button-small" data-action="archive-${kind}-next" ${archiveNext(data)===null?'disabled':''}>Next${svg('right')}</button></nav>`;
+  }
+  function renderMessageArchives(browser) {
+    if(!archiveActive(browser))return;
+    const viewingFile=browser.view==='file';
+    $('drawer-title').textContent=viewingFile?browser.selected.name:'Older message logs';
+    const toolbar=`<div class="archive-toolbar">${viewingFile?'<button class="text-link" data-action="archive-back">← File list</button>':'<span class="explorer-meta">Up to 50 files per page</span>'}<button class="button button-small" data-action="archive-list-refresh" ${browser.busy&&!viewingFile?'disabled':''}>Refresh file list</button></div>`;
+    const intro='<p class="drawer-intro">Read bounded excerpts from the instance’s rotated message-log files. Only listed filenames can be opened; no file is changed.</p>';
+    let content;
+    if(browser.busy)content=loading(viewingFile?'Reading this file revision…':'Loading message-log files…');
+    else {
+      const result=viewingFile?browser.content:browser.inventory,data=result?.data;
+      if(!good(result)||data?.state!=='ok')content=archiveError(result);
+      else if(!viewingFile) {
+        const files=data.files;
+        const count=files.length?`${data.offset+1}–${data.offset+files.length}${archiveOffset(data.total)?' of '+data.total.toLocaleString():''} files`:'No files on this page';
+        content=`<div class="detail-meta">${badge('Available','ok')}${badge(count)}</div>${archiveCoverage(result)}${files.length?`<div class="archive-list">${files.map((file,index)=>{const selectable=typeof file.name==='string'&&file.name&&/^[a-f0-9]{64}$/.test(file.revision||'');return `<button class="archive-file" data-action="archive-file" data-index="${index}" ${selectable?'':'disabled'}><span class="archive-file-name">${esc(file.name||'Unnamed file')}${svg('right')}</span><span class="archive-file-meta"><span>${esc(bytes(file.sizeBytes))}</span><time>${esc(archiveTime(file.modifiedAt))}</time></span>${selectable?'':'<span class="archive-caption">A current filename and revision are required to read this file.</span>'}</button>`;}).join('')}</div>`:empty('No message-log files returned','No matching files are available on this inventory page. Refresh the list to check again.')}${archivePaging('list',browser.inventoryOffsets,data)}`;
+      } else {
+        const records=data.records;
+        const omissionLabels={oversizeSegments:'oversize segment',partialSegments:'partial segment',binaryRecords:'binary record'};
+        const omitted=Object.entries(omissionLabels).filter(([key])=>num(data.omitted?.[key])&&data.omitted[key]>0).map(([key,label])=>`${data.omitted[key].toLocaleString()} ${label}${data.omitted[key]===1?'':'s'}`);
+        if(num(data.skippedBytes)&&data.skippedBytes>0)omitted.push(`${data.skippedBytes.toLocaleString()} skipped ${data.skippedBytes===1?'byte':'bytes'}`);
+        const boundary=archiveNext(data)===null?'End of this file revision.':`Next page begins at byte ${data.nextOffset.toLocaleString()}.`;
+        content=`<div class="detail-meta">${badge('Revision checked','ok')}${badge(records.length+' returned '+(records.length===1?'record':'records'))}${badge(bytes(data.sizeBytes))}</div><p class="archive-caption">Read from byte ${data.offset.toLocaleString()}. ${boundary} Row numbers below apply only to this page.</p>${archiveCoverage(result)}${omitted.length?`<div class="notice archive-omissions"><strong>Content omitted from this bounded read:</strong> ${esc(omitted.join('; '))}. This excerpt is not a complete copy of the file.</div>`:''}${records.length?`<div class="archive-log log-lines" tabindex="0" role="region" aria-label="Message archive records">${records.map((record,index)=>`<div class="log-line"><span class="line-number" aria-hidden="true">${index+1}</span><code>${esc(record.line)}</code></div>`).join('')}</div>`:empty('No readable records on this page',archiveNext(data)!==null?'This byte page contains no returned records. Use Next to continue.':'This bounded read returned no records. Review any omissions reported above.')}${archivePaging('content',browser.contentOffsets,data)}`;
+      }
+    }
+    $('drawer-body').innerHTML=`<div class="archive-browser">${toolbar}${intro}<div aria-live="polite" aria-busy="${browser.busy}">${content}</div></div>`;
+  }
+  function messageArchiveAction(action,index) {
+    const browser=state.messageArchives;if(!browser||state.drawer!=='message-archives')return;
+    if(action==='archive-list-refresh')return loadMessageInventory([0]);
+    if(action==='archive-back')return loadMessageInventory(browser.inventoryOffsets);
+    if(browser.busy)return;
+    if(action==='archive-file'&&browser.view==='inventory')return loadMessageArchive(browser.inventory?.data?.files?.[index]);
+    const kind=browser.view==='file'?'content':'list',offsets=kind==='content'?browser.contentOffsets:browser.inventoryOffsets;
+    const resource=kind==='content'?browser.content:browser.inventory;
+    if(!good(resource)||resource.data?.state!=='ok')return;
+    let nextOffsets;
+    if(action===`archive-${kind}-previous`&&offsets.length>1)nextOffsets=offsets.slice(0,-1);
+    if(action===`archive-${kind}-next`&&archiveNext(resource.data)!==null)nextOffsets=[...offsets,resource.data.nextOffset];
+    if(nextOffsets)return kind==='content'?loadMessageArchive(browser.selected,nextOffsets):loadMessageInventory(nextOffsets);
   }
   function showLogQuery(kind='audit',row=null) {
     if(!['audit','journal'].includes(kind))return;
@@ -580,6 +682,8 @@
     if(action==='enable-form-review'){toggleReview();renderFormReview();return;}
     if(action==='execute-form-command')return executeFormCommand();
     if(action==='oauth-client')return showOAuthClientPrompt();
+    if(action==='message-archives')return showMessageArchives();
+    if(action.startsWith('archive-'))return messageArchiveAction(action,Number(button.dataset.index));
     if(action==='log-query')return showLogQuery(button.dataset.kind);
     if(action==='refresh-log-query'&&state.logQueryResult?.query_id)return runLogQuery({kind:'result',filters:{id:state.logQueryResult.query_id}});
     if(action==='explorer')return showExplorer();
