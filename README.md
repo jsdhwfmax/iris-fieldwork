@@ -57,6 +57,17 @@ python run_local.py
 
 Open **http://127.0.0.1:8766**. The IRIS gateway is at port 52773. `.secrets/` contains generated local credentials and is ignored by Git; never publish it. The initial account is deliberately administrative for this disposable development instance. Keep this local prototype off shared/untrusted machines and do not expose either port publicly.
 
+**Where is the Docker instance password?** `python prepare_local.py` generates it
+before the container starts, in the repository's `.secrets/iris-password` file.
+The username is `_SYSTEM`. `.secrets/instance.json` contains the same password,
+username and loopback IRIS address. `python run_local.py` reads that JSON file
+automatically, so opening Fieldwork requires no password lookup or manual entry.
+For a separate sign-in to this disposable IRIS instance, read `iris-password`
+privately on your own machine; the preparation script deliberately does not print
+it. Do not paste either credential file into screenshots, issues or reviews.
+This credential setup applies to the Docker alternative; IPM installation uses
+an existing authorized account as described in [IPM.md](IPM.md).
+
 On Linux, preparation creates the credential directory with mode `0700` and files with mode `0600`. A networkless initialization service copies the password into a protected volume owned by the IRIS runtime user with mode `0400`; IRIS mounts that volume read-only. Re-running preparation preserves existing credentials. To choose another IRIS host port, pass `--port PORT` to `prepare_local.py` and set `IRIS_HOST_PORT` to the same value when running Compose.
 
 The Dockerfile pins the tested image digest and repairs two missing initialization paths using files already bundled in that image. It compiles the adapter and creates these local demonstration fixtures if absent:
