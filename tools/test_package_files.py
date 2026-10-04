@@ -7,6 +7,8 @@ require integration tests in a disposable IRIS instance.
 """
 
 import errno
+import hashlib
+import json
 from pathlib import Path
 import re
 import tempfile
@@ -61,8 +63,8 @@ class PackageFilesystemTests(unittest.TestCase):
         # Synthetic package inputs; the installer itself decides what to copy.
         for name in (
             "app/backend.py", "app/static/index.html", "app/static/app.js",
-            "iris/fieldwork_runtime.py", "tools/start_installed.py",
-            "README.md", "IPM.md", "LICENSE", "NOTICE.md",
+            "iris/fieldwork_runtime.py", "iris/message_archives.py", "tools/start_installed.py",
+            "README.md", "IPM.md", "ARCHIVES.md", "LICENSE", "NOTICE.md",
         ):
             path = self.source / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -147,6 +149,42 @@ class PackageFilesystemTests(unittest.TestCase):
     def test_modified_gateway_file_refused_and_preserved(self):
         self.install()
         (self.target / "app" / "backend.py").write_text("local modifications", encoding="utf-8")
+        self.assert_guard_refuses_without_mutation("modified, removed or added")
+
+    def test_archive_module_is_installed_and_tracked(self):
+        self.install()
+        relative = "iris/message_archives.py"
+        expected = (self.source / relative).read_bytes()
+        self.assertEqual((self.target / relative).read_bytes(), expected)
+        recorded = json.loads((self.target / ".fieldwork-files.json").read_text(encoding="utf-8"))
+        self.assertEqual(recorded["files"][relative], hashlib.sha256(expected).hexdigest())
+
+    def test_missing_archive_module_preserves_existing_installation(self):
+        self.install()
+        before = snapshot(self.target)
+        (self.source / "iris" / "message_archives.py").unlink()
+        self.assertIn("package is incomplete", self.copy())
+        self.assertEqual(snapshot(self.target), before)
+        self.assert_no_staging_or_backup()
+
+    def test_prior_owned_package_upgrades_to_include_archive_module(self):
+        self.install()
+        # The published 0.2.0 package did not contain this module. Its recorded
+        # file set remains valid for Preflight before the replacement is staged.
+        relative = "iris/message_archives.py"
+        (self.target / relative).unlink()
+        manifest = self.target / ".fieldwork-files.json"
+        recorded = json.loads(manifest.read_text(encoding="utf-8"))
+        del recorded["files"][relative]
+        manifest.write_text(json.dumps(recorded, sort_keys=True), encoding="utf-8")
+        self.assertEqual(ROOT_PROBLEM(str(self.target), True), "")
+        self.install()
+        self.assertEqual((self.target / relative).read_bytes(), (self.source / relative).read_bytes())
+        self.assert_no_staging_or_backup()
+
+    def test_modified_archive_module_refused_and_preserved(self):
+        self.install()
+        (self.target / "iris" / "message_archives.py").write_text("local modifications", encoding="utf-8")
         self.assert_guard_refuses_without_mutation("modified, removed or added")
 
     def test_added_file_refused_and_preserved(self):

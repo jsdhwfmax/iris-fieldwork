@@ -120,7 +120,7 @@ ClassMethod Install(sourceRoot As %String) As %Status
     }
     Set ^FieldworkPackage("owner")=..#Owner,^FieldworkPackage("root")=root
     Set ^FieldworkPackage("pythonPath")=root_"iris/"
-    Set ^FieldworkPackage("version")="0.2.0"
+    Set ^FieldworkPackage("version")="0.3.0"
     Set sc=..ConfigureWebApp()
     If $SYSTEM.Status.IsError(sc) { Quit sc }
     Write !,"Start IRIS Fieldwork on this machine:",!,"  python3 ",root,"tools/start_installed.py",!
@@ -138,8 +138,8 @@ ClassMethod CopyFiles(sourceRoot As %String, root As %String) As %String [ Langu
     import tempfile
     import uuid
     source, target = Path(sourceRoot), Path(root)
-    required = ['app/backend.py', 'app/static/index.html', 'iris/fieldwork_runtime.py',
-                'tools/start_installed.py', 'README.md', 'IPM.md', 'LICENSE', 'NOTICE.md']
+    required = ['app/backend.py', 'app/static/index.html', 'iris/fieldwork_runtime.py', 'iris/message_archives.py',
+                'tools/start_installed.py', 'README.md', 'IPM.md', 'ARCHIVES.md', 'LICENSE', 'NOTICE.md']
     staging = None
     backup = None
     swapped = False

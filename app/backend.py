@@ -27,8 +27,9 @@ from urllib.parse import parse_qs, unquote, urlencode, urlsplit
 import permission_ops
 import security_ops
 import log_ops
+import archive_ops
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 SOURCE = {"repository": "https://github.com/intersystems-community/sysadmin-api-specification",
           "commit": "f764aea427e5c0b1dd08a4c18a0457e0ff7b3b34"}
 PREFIX = "/api/admin"
@@ -201,21 +202,23 @@ class IRISClient:
             return [self.clean(v) for v in value[:50] if v is None or isinstance(v, (str, bool, int, float))]
         return None
 
-    def clean_log(self, value):
+    def clean_log(self, value, limit=512):
         if not isinstance(value, str):
             return "[non-text record withheld]"
-        value = self.clean(value)
         if "PRIVATE KEY" in value.upper():
             return "[key material withheld]"
-        if re.search(r'''(?i)\b(?:authorization|proxy-authorization|password|passwd|pwd|client[_-]?secret|access[_-]?token|refresh[_-]?token|api[_-]?key)\s*["']?\s*[:=]''', value):
+        if re.search(r'''(?i)\b(?:authorization|proxy-authorization|(?:set-)?cookie|password|passwd|pwd|client[_-]?secret|access[_-]?token|refresh[_-]?token|api[_-]?key)\s*["']?\s*[:=]''', value):
             return "[sensitive record withheld]"
+        for sensitive in self.sensitive:
+            value = value.replace(sensitive, "[redacted]")
+        value = re.sub(r"[\x00-\x1f\x7f]", " ", value)
         value = re.sub(r"(?i)(https?://)[^/\s@]+@", r"\1[redacted]@", value)
         value = re.sub(r"[A-Za-z0-9+/=_-]{48,}", "[long token withheld]", value)
-        return value
+        return value[:limit]
 
     def fetch(self, method, path, query=None, body=None):
         query = query or {}
-        curated = any(module.validate_request(method, path, query, body) for module in (permission_ops, security_ops, log_ops))
+        curated = any(module.validate_request(method, path, query, body) for module in (permission_ops, security_ops, log_ops, archive_ops))
         if curated:
             pass
         elif method == "GET":
@@ -353,6 +356,22 @@ class Gateway:
         if kind in security_ops.INSPECT:
             return self.security.inspect(kind, name)
         raise ValueError("Unknown inspection kind")
+
+    def message_archives(self, params, content=False):
+        path = archive_ops.CONTENT if content else archive_ops.INVENTORY
+        query = {"offset": "0", **params}
+        if not archive_ops.validate_request("GET", path, query, None):
+            raise ValueError("Invalid archive query")
+        response = self.client.fetch("GET", path, query)
+        result = {"key": "message_archive" if content else "message_archives",
+                  "label": "Older IRIS messages", "path": path, "method": "GET",
+                  **public_result(response), "data": None}
+        if response["state"] == "ok":
+            try:
+                result["data"] = archive_ops.project(response["payload"].get("result"), path, query, self.client)
+            except ValueError:
+                result.update(state="invalid_response", error=failure("invalid_response")["error"])
+        return result
 
     def status(self):
         info = self.info()
@@ -620,9 +639,14 @@ class Handler(BaseHTTPRequestHandler):
         try:
             parsed = urlsplit(self.path)
             path = parsed.path
-            if parsed.scheme or parsed.netloc or parsed.fragment or len(self.path) > 4096 or (parsed.query and path != "/api/inspect"):
+            if parsed.scheme or parsed.netloc or parsed.fragment or len(self.path) > 4096 or (parsed.query and path not in ("/api/inspect", "/api/message-archives", "/api/message-archive")):
                 self.respond(400, {"error": "invalid_request_path"}); return
             gateway = self.server.gateway
+            if path in ("/api/message-archives", "/api/message-archive"):
+                params = parse_qs(parsed.query, strict_parsing=True, keep_blank_values=True, max_num_fields=3)
+                if any(len(v) != 1 for v in params.values()):
+                    raise ValueError("Duplicate archive query")
+                self.respond(200, gateway.message_archives({key: values[0] for key, values in params.items()}, content=path.endswith("/message-archive"))); return
             if path == "/api/inspect":
                 params = parse_qs(parsed.query, strict_parsing=True, keep_blank_values=True, max_num_fields=3)
                 if set(params) != {"kind", "name"} or any(len(v) != 1 for v in params.values()):

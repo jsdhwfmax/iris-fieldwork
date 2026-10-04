@@ -7,6 +7,11 @@ the public community registry on 24 September 2026; see
 [registry verification](runtime/ipm-community-validation.json). No awarded
 contest bonus or prize is claimed.
 
+The current source is **0.3.0**, adding the [rotated message-log browser](ARCHIVES.md).
+Its registry publication has not yet been verified. Use local source loading to
+evaluate 0.3.0 until a new registry release is confirmed; the 0.2.0 evidence above
+does not validate the new version.
+
 ## Requirements
 
 - A disposable or deliberately selected Linux IRIS 2026.2 instance with IPM
@@ -24,7 +29,7 @@ The package deliberately refuses to adopt an existing manually installed
 instance for evaluating this installation route. The existing Docker setup in
 the README remains available and must not be overlaid with this package.
 
-## Install from the community registry
+## Install the published package from the community registry
 
 In the `USER` IRIS terminal, inspect the configured repositories:
 
@@ -54,13 +59,19 @@ zpm "install iris-fieldwork -v"
 This command installed 0.2.0 with only the official community registry configured,
 without a copied application source tree or a test/local repository.
 
-## Alternative: load the source
+## Load the 0.3.0 source
 
 Clone this repository onto the IRIS host. In the `USER` IRIS terminal:
 
 ```objectscript
 zpm "load /absolute/path/to/iris-fieldwork -v"
 ```
+
+Use the current 0.3.0 checkout and stop the installed gateway before loading it.
+The source package includes `iris/message_archives.py` alongside the existing
+adapter and UI. The archive reader uses the fixed `/usr/irissys/mgr` directory
+and supported Linux file-access primitives; it does not accept an alternative
+log path. See [ARCHIVES.md](ARCHIVES.md) for format and read limits.
 
 ## Start the installed gateway
 
@@ -112,10 +123,10 @@ Package removal is intended to remove its own files, adapter classes,
 configuration and web application. It does not undo administrative actions
 previously performed through Fieldwork or alter the independent Docker setup.
 
-Community-registry installation is verified for the platform and client above.
+Community-registry installation of **0.2.0** is verified for the platform and client above.
 It does not establish suitability for a production environment or an awarded
 contest bonus.
 
 Updates must be performed with the gateway stopped. If an update changes the
-Embedded Python telemetry module, restart the IRIS instance during a planned
+Embedded Python telemetry or archive module, restart the IRIS instance during a planned
 maintenance window so long-lived workers do not retain the previous import.
